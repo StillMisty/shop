@@ -4,8 +4,36 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: false },
-  css: ["~/assets/css/main.css"],
 
+  css: ["~/assets/css/main.css"],
+  app: {
+    pageTransition: {
+      name: "page",
+      mode: "out-in",
+    },
+    head: {
+      title: "购物商城",
+      htmlAttrs: {
+        lang: "zh-CN",
+      },
+      meta: [
+        {
+          charset: "utf-8",
+        },
+        {
+          name: "viewport",
+          content: "width=device-width, initial-scale=1",
+        },
+      ],
+      link: [
+        {
+          rel: "icon",
+          type: "image/x-icon",
+          href: "/favicon.ico",
+        },
+      ],
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
   },
