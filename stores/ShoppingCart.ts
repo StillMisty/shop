@@ -15,7 +15,7 @@ export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
         merchant: "商家1",
       },
       quantity: 1,
-      checked: false,
+      checked: true,
     },
   ]);
   const totalItems = computed(() => {
@@ -42,7 +42,7 @@ export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
     if (productInCart) {
       productInCart.quantity += 1;
     } else {
-      shoppingCart.value.push({ product, quantity: 1, checked: false });
+      shoppingCart.value.push({ product, quantity: 1, checked: true });
     }
   };
 

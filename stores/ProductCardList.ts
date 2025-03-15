@@ -105,8 +105,17 @@ export const useMyProductCardListStore = defineStore(
         merchant: "商家1",
       },
     ]);
+    const product2Show = ref<ProductCardType[]>([...productCardList.value]);
+
+    const searchProduct = (keyword: string) => {
+      product2Show.value = productCardList.value.filter((item) => {
+        return item.name.includes(keyword);
+      });
+    };
     return {
       productCardList,
+      product2Show,
+      searchProduct,
     };
   },
 );

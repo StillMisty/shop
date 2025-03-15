@@ -16,15 +16,26 @@
       >
     </div>
     <div>
-      <el-input v-model="search" placeholder="搜索商品" :prefix-icon="Search" />
+      <el-input
+        v-model="search"
+        placeholder="搜索商品"
+        :prefix-icon="Search"
+        @input="handleSearch"
+      />
     </div>
   </header>
 </template>
 
 <script lang="ts" setup>
 import { Search } from "lucide-vue-next";
+import { useMyProductCardListStore } from "~/stores/ProductCardList";
 import { useMyShoppingCartStore } from "~/stores/ShoppingCart";
 
 const shoppingCartStore = useMyShoppingCartStore();
+const productCardListStore = useMyProductCardListStore();
+
 const search = ref("");
+const handleSearch = () => {
+  productCardListStore.searchProduct(search.value);
+};
 </script>

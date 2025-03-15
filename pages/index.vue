@@ -3,7 +3,7 @@
     class="grid gap-4 p-16 max-w-7xl mx-auto grid-cols-[repeat(auto-fill,minmax(240px,1fr))] w-full"
   >
     <ProductCard
-      v-for="product in productCardList"
+      v-for="product in product2Show"
       :key="product.id"
       v-bind="product"
       @add-cart="shoppingCartStore.addProductToCart"
@@ -17,5 +17,6 @@ import { useMyShoppingCartStore } from "~/stores/ShoppingCart";
 
 const productCardListStore = useMyProductCardListStore();
 const shoppingCartStore = useMyShoppingCartStore();
-const productCardList = productCardListStore.productCardList;
+
+const { product2Show } = storeToRefs(productCardListStore);
 </script>
