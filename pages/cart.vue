@@ -10,8 +10,9 @@
       />
     </div>
     <SettlementCard
-      class="min-w-48 h-48"
+      class="min-w-48 h-40"
       :totalPrice="shoppingCartStore.totalPrice"
+      @settlement="shoppingCartStore.settlement"
     />
   </div>
 </template>

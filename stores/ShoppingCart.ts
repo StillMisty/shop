@@ -2,22 +2,14 @@ import type { CartItemType } from "~/types/CartItemType";
 import type { ProductCardType } from "~/types/ProductCardType";
 
 export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
-  const shoppingCart = ref<CartItemType[]>([
-    {
-      product: {
-        id: "1",
-        name: "商品1",
-        price: 100,
-        image: "/images/placeholder.png",
-        soldCount: 100,
-        category: "分类1",
-        discount: 0.1,
-        merchant: "商家1",
-      },
-      quantity: 1,
-      checked: true,
-    },
-  ]);
+  const shoppingCart = ref<CartItemType[]>([]);
+  // 从服务器获取购物车数据
+  const fetchShoppingCart = async () => {
+    const { data } = await useFetch("/api/cart");
+    shoppingCart.value = data.value ?? [];
+  };
+  fetchShoppingCart();
+
   const totalItems = computed(() => {
     return shoppingCart.value.reduce((acc, item) => {
       return acc + item.quantity;
@@ -33,9 +25,6 @@ export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
   });
 
   const addProductToCart = (product: ProductCardType) => {
-    console.log(product);
-    console.log(totalItems.value);
-
     const productInCart = shoppingCart.value.find(
       (item) => item.product.id === product.id,
     );
@@ -58,6 +47,14 @@ export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
   const clearCart = () => {
     shoppingCart.value = [];
   };
+
+  /**
+   * 结账
+   */
+  const settlement = () => {
+    const checkedItems = shoppingCart.value.filter((item) => item.checked);
+    console.log(checkedItems);
+  };
   return {
     shoppingCart,
     totalItems,
@@ -65,5 +62,6 @@ export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
     addProductToCart,
     removeProductFromCart,
     clearCart,
+    settlement,
   };
 });

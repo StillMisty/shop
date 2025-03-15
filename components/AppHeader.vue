@@ -1,6 +1,7 @@
 <template>
+  <div class="h-16"></div>
   <header
-    class="flex justify-between items-center w-full px-8 py-2 bg-gray-800 text-white"
+    class="flex justify-between items-center w-full px-8 py-2 bg-gray-800/90 text-white fixed top-0 z-10 h-16"
   >
     <div class="flex items-center space-x-2">
       <el-avatar fit="cover" alt="用户头像" />

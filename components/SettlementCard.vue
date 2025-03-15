@@ -4,9 +4,11 @@
       <h3 class="text-lg">结算明细</h3>
       <div class="flex flex-row justify-between space-x-4">
         <p>合计</p>
-        <p>¥ {{ totalPrice }}</p>
+        <p class="text-red-500">
+          <span class="text-sm">¥</span> {{ totalPrice }}
+        </p>
       </div>
-      <el-button type="primary" class="w-full mt-4" @click="emit('settlement')">
+      <el-button type="primary" class="w-full" @click="emit('settlement')">
         去结算
       </el-button>
     </div>
