@@ -24,6 +24,7 @@
           <el-button
             v-if="row.orderStatus === OrderStatus.PENDING_PAYMENT"
             type="primary"
+            size="small"
             @click="
               orderStore.updateOrder({
                 orderId: row.id,
