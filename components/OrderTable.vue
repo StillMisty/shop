@@ -25,14 +25,9 @@
             v-if="row.orderStatus === OrderStatus.PENDING_PAYMENT"
             type="primary"
             size="small"
-            @click="
-              orderStore.updateOrder({
-                orderId: row.id,
-                newStatus: OrderStatus.PAID,
-              })
-            "
+            @click="handlePay(row.id)"
           >
-            支付
+            前去支付
           </el-button>
         </div>
       </template>
@@ -45,4 +40,13 @@ import { OrderStatus } from "~/types/OrderType";
 
 const orderStore = useMyOrderStore();
 const { orders } = storeToRefs(orderStore);
+
+const handlePay = (id: string) => {
+  const router = useRouter();
+  router.push(`/orders/${id}`);
+  // orderStore.updateOrder({
+  //   orderId: row.id,
+  //   newStatus: OrderStatus.PAID,
+  // });
+};
 </script>

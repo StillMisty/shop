@@ -1,4 +1,5 @@
 import type { CartItemType } from "~/types/CartItemType";
+import type { ApiResponse } from "~/types/DTO/ApiResponse";
 import type { CreateOrderDto } from "~/types/DTO/OrderDtoType";
 import type { OrderType } from "~/types/OrderType";
 import type { ProductCardType } from "~/types/ProductCardType";
@@ -18,9 +19,9 @@ export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
   // 从服务器获取购物车数据
   const fetchShoppingCart = async () => {
     const res = await withLoading(async () => {
-      return await $fetch("/api/cart");
+      return await $fetch<ApiResponse>("/api/cart");
     });
-    shoppingCart.value = res ?? [];
+    shoppingCart.value = res.data ?? [];
   };
   onMounted(() => {
     fetchShoppingCart();
@@ -80,7 +81,7 @@ export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
         };
       }),
     };
-    const res = await $fetch("/api/order", {
+    const res = await $fetch<ApiResponse>("/api/order", {
       method: "POST",
       body: order,
     });
@@ -90,10 +91,22 @@ export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
     }
   };
 
+  const selectAll = computed({
+    get: () => {
+      return shoppingCart.value.every((item) => item.checked);
+    },
+    set: (value) => {
+      shoppingCart.value.forEach((item) => {
+        item.checked = value;
+      });
+    },
+  });
+
   return {
     shoppingCart,
     totalItems,
     totalPrice,
+    selectAll,
     addProductToCart,
     removeProductFromCart,
     clearCart,

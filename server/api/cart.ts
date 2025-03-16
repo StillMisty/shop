@@ -1,6 +1,7 @@
 import { CartItemType } from "~/types/CartItemType";
+import { ApiResponse } from "~/types/DTO/ApiResponse";
 
-export default defineEventHandler(async (): Promise<CartItemType[]> => {
+export default defineEventHandler(async () => {
   const cart: CartItemType[] = [
     {
       product: {
@@ -17,5 +18,5 @@ export default defineEventHandler(async (): Promise<CartItemType[]> => {
       checked: false,
     },
   ];
-  return cart;
+  return ApiResponse.success(cart);
 });

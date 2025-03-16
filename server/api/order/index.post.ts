@@ -15,12 +15,14 @@ export default defineEventHandler(async (event) => {
   );
 
   // 保存订单数据
-  const orderItems = body.orderItems.map((item) => {
-    return {
-      product: productMap.get(item.productId),
-      quantity: item.quantity,
-    };
-  });
+  const orderItems = body.orderItems
+    .filter((item) => productMap.has(item.productId))
+    .map((item) => {
+      return {
+        product: productMap.get(item.productId)!,
+        quantity: item.quantity,
+      };
+    });
 
   const orderTotal = body.orderItems.reduce((acc, item) => {
     const product = productMap.get(item.productId);

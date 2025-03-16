@@ -5,7 +5,7 @@
       <div class="flex flex-row justify-between space-x-4">
         <p>合计</p>
         <p class="text-red-500">
-          <span class="text-sm">¥</span> {{ totalPrice }}
+          <span class="text-sm">¥</span> {{ props.totalPrice }}
         </p>
       </div>
       <el-button
@@ -21,12 +21,13 @@
 </template>
 
 <script lang="ts" setup>
-defineProps({
+const props = defineProps({
   totalPrice: {
     type: Number,
     required: true,
     default: 0,
   },
 });
+
 const emit = defineEmits(["settlement"]);
 </script>

@@ -4,6 +4,7 @@
       class="flex flex-col gap-4 w-full"
       v-if="shoppingCartStore.shoppingCart.length"
     >
+      <el-switch v-model="shoppingCartStore.selectAll" active-text="全选" />
       <ProductCartCard
         v-for="cartItem in shoppingCartStore.shoppingCart"
         v-model:quantity="cartItem.quantity"
