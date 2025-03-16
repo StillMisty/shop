@@ -8,7 +8,12 @@
           <span class="text-sm">¥</span> {{ totalPrice }}
         </p>
       </div>
-      <el-button type="primary" class="w-full" @click="emit('settlement')">
+      <el-button
+        type="primary"
+        class="w-full"
+        @click="emit('settlement')"
+        :disabled="totalPrice <= 0"
+      >
         去结算
       </el-button>
     </div>
@@ -17,7 +22,11 @@
 
 <script lang="ts" setup>
 defineProps({
-  totalPrice: Number,
+  totalPrice: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
 });
 const emit = defineEmits(["settlement"]);
 </script>

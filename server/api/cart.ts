@@ -14,7 +14,7 @@ export default defineEventHandler(async (): Promise<CartItemType[]> => {
         merchant: "商家1",
       },
       quantity: 1,
-      checked: true,
+      checked: false,
     },
   ];
   return cart;

@@ -1,14 +1,19 @@
 import type { CartItemType } from "~/types/CartItemType";
+import type { CreateOrderDto } from "~/types/DTO/OrderDtoType";
+import type { OrderType } from "~/types/OrderType";
 import type { ProductCardType } from "~/types/ProductCardType";
 
 export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
   const shoppingCart = ref<CartItemType[]>([]);
+
   // 从服务器获取购物车数据
   const fetchShoppingCart = async () => {
-    const { data } = await useFetch("/api/cart");
-    shoppingCart.value = data.value ?? [];
+    const data = await $fetch("/api/cart");
+    shoppingCart.value = data ?? [];
   };
-  fetchShoppingCart();
+  onMounted(() => {
+    fetchShoppingCart();
+  });
 
   const totalItems = computed(() => {
     return shoppingCart.value.reduce((acc, item) => {
@@ -31,7 +36,7 @@ export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
     if (productInCart) {
       productInCart.quantity += 1;
     } else {
-      shoppingCart.value.push({ product, quantity: 1, checked: true });
+      shoppingCart.value.push({ product, quantity: 1, checked: false });
     }
   };
 
@@ -51,10 +56,29 @@ export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
   /**
    * 结账
    */
-  const settlement = () => {
+  const settlement = async () => {
     const checkedItems = shoppingCart.value.filter((item) => item.checked);
-    console.log(checkedItems);
+    if (checkedItems.length === 0) {
+      return;
+    }
+    const order: CreateOrderDto = {
+      orderItems: checkedItems.map((item) => {
+        return {
+          productId: item.product.id,
+          quantity: item.quantity,
+        };
+      }),
+    };
+    const data = await $fetch("/api/order", {
+      method: "POST",
+      body: order,
+    });
+    if (data.success) {
+      clearCart();
+      return data.order as OrderType;
+    }
   };
+
   return {
     shoppingCart,
     totalItems,
@@ -63,5 +87,6 @@ export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
     removeProductFromCart,
     clearCart,
     settlement,
+    fetchShoppingCart,
   };
 });
