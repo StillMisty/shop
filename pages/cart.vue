@@ -13,9 +13,7 @@
       />
     </div>
     <div class="flex flex-col gap-4 w-full" v-else>
-      <div class="flex items-center justify-center h-40 text-2xl text-gray-400">
-        购物车空空如也
-      </div>
+      <el-empty description="购物车空空如也" />
     </div>
     <SettlementCard
       class="min-w-48 h-40"
@@ -26,12 +24,21 @@
 </template>
 
 <script lang="ts" setup>
-import { useMyShoppingCartStore } from "~/stores/ShoppingCart";
+import type { UpdateOrderStatusDto } from "~/types/DTO/OrderDtoType";
+import { OrderStatus } from "~/types/OrderType";
 
 const shoppingCartStore = useMyShoppingCartStore();
+const orderStore = useMyOrderStore();
+
 const handleSettlement = async () => {
   const data = await shoppingCartStore.settlement();
-  console.log(data);
+  if (!data) {
+    ElMessage({
+      type: "warning",
+      message: "请选择商品",
+    });
+    return;
+  }
   ElMessageBox.confirm(
     `订单号：${data?.id}\n共: ￥${data?.orderTotal}`,
     "结账",
@@ -43,10 +50,12 @@ const handleSettlement = async () => {
     },
   )
     .then(() => {
-      $fetch("/api/order/pay", {
-        method: "POST",
-        body: JSON.stringify({ orderId: data?.id }),
-      });
+      const updateOrderStatusDto: UpdateOrderStatusDto = {
+        orderId: data.id,
+        newStatus: OrderStatus.PAID,
+      };
+      orderStore.updateOrder(updateOrderStatusDto);
+
       ElMessage({
         type: "success",
         message: "支付成功",

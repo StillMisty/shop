@@ -1,6 +1,7 @@
 import { productCardList } from "~/server/data";
+import { ApiResponse } from "~/types/DTO/ApiResponse";
 import type { CreateOrderDto } from "~/types/DTO/OrderDtoType";
-import { OrderType, OrderStatus } from "~/types/OrderType.d";
+import { OrderType, OrderStatus } from "~/types/OrderType";
 
 export default defineEventHandler(async (event) => {
   const body: CreateOrderDto = await readBody(event);
@@ -37,8 +38,5 @@ export default defineEventHandler(async (event) => {
   // 使用Nuxt内置的存储功能
   await useStorage().setItem(`order:${id}`, order);
 
-  return {
-    success: true,
-    order,
-  };
+  return ApiResponse.success(order);
 });

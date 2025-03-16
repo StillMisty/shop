@@ -1,3 +1,5 @@
+import type { ProductCardType } from "./ProductCardType";
+
 type OrderItemType = {
   product: ProductCardType;
   quantity: number;

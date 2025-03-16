@@ -5,11 +5,22 @@ import type { ProductCardType } from "~/types/ProductCardType";
 
 export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
   const shoppingCart = ref<CartItemType[]>([]);
+  const loading = ref(true);
+  const withLoading = async <T>(action: () => Promise<T>): Promise<T> => {
+    loading.value = true;
+    try {
+      return await action();
+    } finally {
+      loading.value = false;
+    }
+  };
 
   // 从服务器获取购物车数据
   const fetchShoppingCart = async () => {
-    const data = await $fetch("/api/cart");
-    shoppingCart.value = data ?? [];
+    const res = await withLoading(async () => {
+      return await $fetch("/api/cart");
+    });
+    shoppingCart.value = res ?? [];
   };
   onMounted(() => {
     fetchShoppingCart();
@@ -69,13 +80,13 @@ export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
         };
       }),
     };
-    const data = await $fetch("/api/order", {
+    const res = await $fetch("/api/order", {
       method: "POST",
       body: order,
     });
-    if (data.success) {
+    if (res.success) {
       clearCart();
-      return data.order as OrderType;
+      return res.data as OrderType;
     }
   };
 
