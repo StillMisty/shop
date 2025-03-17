@@ -3,8 +3,13 @@
   <header
     class="flex justify-between items-center w-full px-8 py-2 bg-gray-800/90 text-white fixed top-0 z-10 h-16"
   >
-    <div class="flex items-center space-x-2">
-      <el-avatar fit="cover" alt="用户头像" />
+    <div class="flex items-center gap-1">
+      <el-avatar
+        fit="cover"
+        alt="用户头像"
+        src="/images/photo.jpg"
+        class="mr-2 cursor-pointer"
+      />
       <el-button><NuxtLink to="/">首页</NuxtLink></el-button>
       <el-button><NuxtLink to="/order">订单中心</NuxtLink></el-button>
       <el-button
