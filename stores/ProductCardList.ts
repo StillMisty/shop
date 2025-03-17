@@ -1,4 +1,5 @@
 import type { ApiResponse } from "~/types/DTO/ApiResponse";
+import type { ProduceSearchType } from "~/types/DTO/ProductQuery";
 import type { ProductCardType } from "~/types/ProductCardType";
 
 export const useMyProductCardListStore = defineStore(
@@ -19,26 +20,22 @@ export const useMyProductCardListStore = defineStore(
     const fetchProductCard = async () => {
       product2Show.value = await withLoading(async () => {
         const { data } =
-          await useFetch<ApiResponse<ProductCardType[]>>("/api/products");
+          await useFetch<ApiResponse<ProductCardType[]>>("/api/product");
         return data.value?.data ?? [];
       });
     };
 
-    const fetchProductCardBySearch = async (keyword: string) => {
-      const router = useRouter();
-      router.push({
-        path: "/search",
-        query: {
-          keyword,
-        },
-      });
-
+    const fetchProductCardByKeyword = async (
+      keyword: string,
+      type: ProduceSearchType,
+    ) => {
       product2Show.value = await withLoading(async () => {
         const res = await $fetch<ApiResponse<ProductCardType[]>>(
-          "/api/products",
+          "/api/product",
           {
             query: {
               keyword,
+              type,
             },
           },
         );
@@ -50,7 +47,7 @@ export const useMyProductCardListStore = defineStore(
       product2Show,
       loading,
       fetchProductCard,
-      fetchProductCardBySearch,
+      fetchProductCardByKeyword,
     };
   },
 );

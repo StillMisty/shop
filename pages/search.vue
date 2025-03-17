@@ -1,8 +1,8 @@
 <template>
-  <div class="p-16" v-loading="loading">
+  <div v-loading="loading">
     <div
       v-if="product2Show.length"
-      class="grid gap-4 max-w-7xl mx-auto grid-cols-[repeat(auto-fill,minmax(240px,1fr))]"
+      class="grid gap-4 max-w-7xl mx-auto grid-cols-[repeat(auto-fill,minmax(240px,1fr))] w-full p-16"
     >
       <ProductCard
         v-for="product in product2Show"
@@ -11,20 +11,27 @@
         @add-cart="shoppingCartStore.addProductToCart"
       />
     </div>
-    <el-empty v-else description="没有想要的宝贝呢" />
+    <div v-else class="p-16">
+      <el-empty description="没有想要的宝贝呢" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useMyProductCardListStore } from "~/stores/ProductCardList";
 import { useMyShoppingCartStore } from "~/stores/ShoppingCart";
+import type { ProduceSearchType } from "~/types/DTO/ProductQuery";
 
 const productCardListStore = useMyProductCardListStore();
 const shoppingCartStore = useMyShoppingCartStore();
 
 const { product2Show, loading } = storeToRefs(productCardListStore);
+
 const route = useRoute();
-await productCardListStore.fetchProductCardBySearch(
-  route.query.keyword as string,
-);
+onMounted(() => {
+  productCardListStore.fetchProductCardByKeyword(
+    route.query.keyword as string,
+    route.query.type as ProduceSearchType,
+  );
+});
 </script>

@@ -17,26 +17,48 @@
       >
     </div>
     <div>
-      <el-input
-        v-model="search"
-        placeholder="搜索商品"
-        :prefix-icon="Search"
-        @change="handleSearch"
-      />
+      <el-input v-model="keyword" placeholder="搜索商品" @change="handleSearch">
+        <template #prepend>
+          <el-button :icon="Search" />
+        </template>
+        <template #append>
+          <el-select v-model="type" style="width: 72px">
+            <el-option
+              :label="ProduceSearchType.PRODUCT"
+              :value="ProduceSearchType.PRODUCT"
+            />
+            <el-option
+              :label="ProduceSearchType.MERCHANT"
+              :value="ProduceSearchType.MERCHANT"
+            />
+          </el-select>
+        </template>
+      </el-input>
     </div>
   </header>
 </template>
 
 <script lang="ts" setup>
 import { Search } from "lucide-vue-next";
-import { useMyProductCardListStore } from "~/stores/ProductCardList";
 import { useMyShoppingCartStore } from "~/stores/ShoppingCart";
+import { ProduceSearchType } from "~/types/DTO/ProductQuery";
 
 const shoppingCartStore = useMyShoppingCartStore();
 const productCardListStore = useMyProductCardListStore();
-
-const search = ref("");
-const handleSearch = () => {
-  productCardListStore.fetchProductCardBySearch(search.value);
+const keyword = ref("");
+const type = ref(ProduceSearchType.PRODUCT);
+const handleSearch = async () => {
+  const router = useRouter();
+  await router.push({
+    path: "/search",
+    query: {
+      keyword: keyword.value,
+      type: type.value,
+    },
+  });
+  await productCardListStore.fetchProductCardByKeyword(
+    keyword.value,
+    type.value,
+  );
 };
 </script>
