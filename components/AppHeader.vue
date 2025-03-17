@@ -21,7 +21,7 @@
         v-model="search"
         placeholder="搜索商品"
         :prefix-icon="Search"
-        @input="handleSearch"
+        @change="handleSearch"
       />
     </div>
   </header>
@@ -37,6 +37,6 @@ const productCardListStore = useMyProductCardListStore();
 
 const search = ref("");
 const handleSearch = () => {
-  productCardListStore.searchProduct(search.value);
+  productCardListStore.fetchProductCardBySearch(search.value);
 };
 </script>

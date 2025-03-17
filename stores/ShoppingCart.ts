@@ -50,6 +50,10 @@ export const useMyShoppingCartStore = defineStore("myShoppingCart", () => {
     } else {
       shoppingCart.value.push({ product, quantity: 1, checked: false });
     }
+    ElMessage({
+      message: `成功添加商品 ${product.name} 到购物车`,
+      type: "success",
+    });
   };
 
   const removeProductFromCart = (productId: string) => {

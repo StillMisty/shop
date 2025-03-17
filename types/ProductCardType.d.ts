@@ -4,7 +4,7 @@ export type ProductCardType = {
   price: number;
   image: string;
   soldCount: number;
-  category: string;
+  category: string[];
   discount: number;
   merchant: string;
 };
