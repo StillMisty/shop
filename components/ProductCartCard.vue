@@ -11,10 +11,7 @@
         <el-image class="size-36" fit="cover" :src="props.product.image" />
       </div>
 
-      <div class="flex flex-col gap-2 text-center">
-        <h3 class="text-lg">{{ props.product.name }}</h3>
-        <p class="text-lg text-red-500">¥{{ props.product.price }}</p>
-      </div>
+      <PriceDisplay :price="props.product.price"></PriceDisplay>
       <el-input-number
         :model-value="props.quantity"
         @update:model-value="emit('update:quantity', $event ?? 1)"

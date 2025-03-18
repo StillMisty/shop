@@ -20,9 +20,7 @@
     </el-table-column>
     <el-table-column prop="orderTotal" label="总价" width="100">
       <template #default="{ row }">
-        <p class="text-red-500">
-          <span class="text-sm">¥</span> {{ row.orderTotal }}
-        </p>
+        <PriceDisplay :price="row.orderTotal" />
       </template>
     </el-table-column>
     <el-table-column
@@ -61,6 +59,7 @@
 </template>
 
 <script lang="ts" setup>
+import PriceDisplay from "./PriceDisplay.vue";
 import { OrderStatus } from "~/types/OrderType";
 
 const orderStore = useMyOrderStore();

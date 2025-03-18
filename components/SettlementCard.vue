@@ -4,9 +4,7 @@
       <h3 class="text-lg">结算明细</h3>
       <div class="flex flex-row justify-between space-x-4">
         <p>合计</p>
-        <p class="text-red-500">
-          <span class="text-sm">¥</span> {{ displayPrice }}
-        </p>
+        <PriceDisplay :price="displayPrice" />
       </div>
       <el-button
         type="primary"
@@ -32,27 +30,26 @@ const props = defineProps({
 });
 const displayPrice = ref(0);
 const emit = defineEmits(["settlement"]);
-watch(
-  () => props.totalPrice,
-  (newValue) => {
-    animatePrice(newValue);
-  },
-  { immediate: false },
-);
 
-onMounted(() => {
-  displayPrice.value = props.totalPrice;
-});
 // 价格动画函数
 const animatePrice = (to: number) => {
   gsap.to(displayPrice, {
-    duration: 0.5, // 动画持续时间，单位：秒
+    duration: 1, // 动画持续时间，单位：秒
     value: to,
-    ease: "power2.out", // 动画缓动函数，可以根据需求更改
+    ease: "power4.out", // 动画缓动函数，可以根据需求更改
     onUpdate: () => {
       // 保留两位小数
       displayPrice.value = Number(displayPrice.value.toFixed(2));
     },
   });
 };
+
+watchEffect(() => {
+  animatePrice(props.totalPrice);
+});
+
+// 初始化价格
+onMounted(() => {
+  displayPrice.value = props.totalPrice;
+});
 </script>
