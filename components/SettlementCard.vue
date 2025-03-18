@@ -34,8 +34,8 @@ const displayPrice = ref(0);
 const emit = defineEmits(["settlement"]);
 watch(
   () => props.totalPrice,
-  (newValue, oldValue) => {
-    animatePrice(oldValue, newValue);
+  (newValue) => {
+    animatePrice(newValue);
   },
   { immediate: false },
 );
@@ -44,7 +44,7 @@ onMounted(() => {
   displayPrice.value = props.totalPrice;
 });
 // 价格动画函数
-const animatePrice = (from: number, to: number) => {
+const animatePrice = (to: number) => {
   gsap.to(displayPrice, {
     duration: 0.5, // 动画持续时间，单位：秒
     value: to,
