@@ -4,7 +4,7 @@
       <template #default="{ row }">
         <div
           class="flex items-center gap-3 overflow-x-auto"
-          @wheel="handleWheel"
+          @wheel.stop="handleWheel"
         >
           <div
             class="flex flex-col items-center"
@@ -84,9 +84,14 @@ const handlePay = (id: string) => {
 };
 
 const handleWheel = (e: WheelEvent) => {
+  // 没有滚动条时，不阻止默认行为
   if (e.deltaY !== 0 && e.currentTarget) {
+    const target = e.currentTarget as HTMLElement;
+    if (target.scrollWidth <= target.clientWidth) {
+      return;
+    }
     e.preventDefault();
-    (e.currentTarget as HTMLElement).scrollLeft += e.deltaY;
+    target.scrollLeft += e.deltaY;
   }
 };
 </script>
