@@ -5,7 +5,7 @@
       <div class="flex flex-row justify-between space-x-4">
         <p>合计</p>
         <p class="text-red-500">
-          <span class="text-sm">¥</span> {{ props.totalPrice }}
+          <span class="text-sm">¥</span> {{ displayPrice }}
         </p>
       </div>
       <el-button
@@ -21,6 +21,8 @@
 </template>
 
 <script lang="ts" setup>
+import { gsap } from "gsap";
+
 const props = defineProps({
   totalPrice: {
     type: Number,
@@ -28,6 +30,29 @@ const props = defineProps({
     default: 0,
   },
 });
-
+const displayPrice = ref(0);
 const emit = defineEmits(["settlement"]);
+watch(
+  () => props.totalPrice,
+  (newValue, oldValue) => {
+    animatePrice(oldValue, newValue);
+  },
+  { immediate: false },
+);
+
+onMounted(() => {
+  displayPrice.value = props.totalPrice;
+});
+// 价格动画函数
+const animatePrice = (from: number, to: number) => {
+  gsap.to(displayPrice, {
+    duration: 0.5, // 动画持续时间，单位：秒
+    value: to,
+    ease: "power2.out", // 动画缓动函数，可以根据需求更改
+    onUpdate: () => {
+      // 保留两位小数
+      displayPrice.value = Number(displayPrice.value.toFixed(2));
+    },
+  });
+};
 </script>

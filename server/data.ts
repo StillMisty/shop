@@ -4,7 +4,7 @@ export const productCardList: ProductCardType[] = [
   {
     id: "1",
     name: "商品1",
-    price: 100,
+    price: 100.49,
     image: "/images/placeholder.png",
     soldCount: 100,
     category: ["分类1"],
@@ -14,7 +14,7 @@ export const productCardList: ProductCardType[] = [
   {
     id: "2",
     name: "商品2",
-    price: 200,
+    price: 200.99,
     image: "/images/placeholder.png",
     soldCount: 200,
     category: ["分类2", "分类3"],
@@ -34,7 +34,7 @@ export const productCardList: ProductCardType[] = [
   {
     id: "4",
     name: "商品4",
-    price: 400,
+    price: 400.5,
     image: "/images/placeholder.png",
     soldCount: 400,
     category: ["分类4"],

@@ -3,6 +3,7 @@
     <div
       v-if="product2Show.length"
       class="grid gap-4 max-w-7xl mx-auto grid-cols-[repeat(auto-fill,minmax(240px,1fr))] w-full p-16"
+      v-auto-animate
     >
       <ProductCard
         v-for="product in product2Show"
@@ -18,6 +19,7 @@
 </template>
 
 <script setup lang="ts">
+import { vAutoAnimate } from "@formkit/auto-animate";
 import { useMyProductCardListStore } from "~/stores/ProductCardList";
 import { useMyShoppingCartStore } from "~/stores/ShoppingCart";
 import type { ProduceSearchType } from "~/types/DTO/ProductQuery";

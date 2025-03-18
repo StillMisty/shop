@@ -3,7 +3,7 @@
     <el-table-column prop="orderItems" label="订单">
       <template #default="{ row }">
         <div
-          class="flex items-center gap-3 overflow-x-auto"
+          class="flex items-center gap-3 overflow-x-auto scroll-smooth"
           @wheel.stop="handleWheel"
         >
           <div
@@ -18,11 +18,13 @@
         </div>
       </template>
     </el-table-column>
-    <el-table-column
-      prop="orderTotal"
-      label="总价"
-      width="100"
-    ></el-table-column>
+    <el-table-column prop="orderTotal" label="总价" width="100">
+      <template #default="{ row }">
+        <p class="text-red-500">
+          <span class="text-sm">¥</span> {{ row.orderTotal }}
+        </p>
+      </template>
+    </el-table-column>
     <el-table-column
       prop="orderTime"
       label="创建时间"
@@ -91,7 +93,7 @@ const handleWheel = (e: WheelEvent) => {
       return;
     }
     e.preventDefault();
-    target.scrollLeft += e.deltaY;
+    target.scrollLeft += e.deltaY * 2;
   }
 };
 </script>

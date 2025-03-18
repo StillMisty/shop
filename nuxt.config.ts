@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
-  devtools: { enabled: false },
+  devtools: { enabled: true },
 
   css: ["~/assets/css/main.css"],
   app: {
@@ -38,5 +38,10 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
 
-  modules: ["@pinia/nuxt", "@element-plus/nuxt", "lenis/nuxt"],
+  modules: [
+    "@pinia/nuxt",
+    "@element-plus/nuxt",
+    "lenis/nuxt",
+    "@formkit/auto-animate/nuxt",
+  ],
 });

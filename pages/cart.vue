@@ -3,10 +3,12 @@
     <div
       class="flex flex-col gap-4 w-full"
       v-if="shoppingCartStore.shoppingCart.length"
+      v-auto-animate
     >
       <el-switch v-model="shoppingCartStore.selectAll" active-text="全选" />
       <ProductCartCard
         v-for="cartItem in shoppingCartStore.shoppingCart"
+        :key="cartItem.product.id"
         v-model:quantity="cartItem.quantity"
         v-model:checked="cartItem.checked"
         :product="cartItem.product"
@@ -25,6 +27,7 @@
 </template>
 
 <script lang="ts" setup>
+import { vAutoAnimate } from "@formkit/auto-animate";
 import type { UpdateOrderStatusDto } from "~/types/DTO/OrderDtoType";
 import { OrderStatus } from "~/types/OrderType";
 

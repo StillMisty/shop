@@ -7,10 +7,10 @@ export default defineEventHandler(async () => {
       product: {
         id: "1",
         name: "商品1",
-        price: 100,
+        price: 100.49,
         image: "/images/placeholder.png",
         soldCount: 100,
-        category: "分类1",
+        category: ["分类1"],
         discount: 0.1,
         merchant: "商家1",
       },
