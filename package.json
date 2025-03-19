@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@tanstack/vue-query": "^5.69.0",
     "gsap": "^3.12.7",
     "lenis": "^1.2.3",
     "lucide-vue-next": "^0.483.0",

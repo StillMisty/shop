@@ -4,6 +4,8 @@ import { ProduceSearchType, ProductQuery } from "~/types/DTO/ProductQuery";
 
 /**
  * 根据类别查询商品列表
+ * @param ProductQuery 查询参数
+ * @returns 商品列表
  */
 export default defineEventHandler(async (event) => {
   const query = getQuery(event) as ProductQuery;

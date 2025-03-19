@@ -31,7 +31,7 @@ export const useMyProductCardListStore = defineStore(
     ) => {
       product2Show.value = await withLoading(async () => {
         const res = await $fetch<ApiResponse<ProductCardType[]>>(
-          "/api/product",
+          "/api/product/search",
           {
             query: {
               keyword,
