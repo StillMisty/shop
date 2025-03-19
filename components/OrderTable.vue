@@ -3,7 +3,7 @@
     <el-table-column prop="orderItems" label="订单">
       <template #default="{ row }">
         <div
-          class="flex items-center gap-3 overflow-x-auto scroll-smooth"
+          class="flex items-center gap-3 overflow-x-auto"
           @wheel.stop="handleWheel"
         >
           <div
@@ -60,6 +60,7 @@
 
 <script lang="ts" setup>
 import PriceDisplay from "./PriceDisplay.vue";
+import gsap from "gsap";
 import { OrderStatus } from "~/types/OrderType";
 
 const orderStore = useMyOrderStore();
@@ -92,7 +93,12 @@ const handleWheel = (e: WheelEvent) => {
       return;
     }
     e.preventDefault();
-    target.scrollLeft += e.deltaY * 2;
+
+    gsap.to(target, {
+      scrollLeft: target.scrollLeft + e.deltaY,
+      duration: 0.3,
+      ease: "power2.out",
+    });
   }
 };
 </script>

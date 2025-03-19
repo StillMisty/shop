@@ -19,7 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import { vAutoAnimate } from "@formkit/auto-animate";
 import { useMyProductCardListStore } from "~/stores/ProductCardList";
 import { useMyShoppingCartStore } from "~/stores/ShoppingCart";
 import type { ProduceSearchType } from "~/types/DTO/ProductQuery";

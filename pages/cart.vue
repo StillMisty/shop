@@ -27,7 +27,6 @@
 </template>
 
 <script lang="ts" setup>
-import { vAutoAnimate } from "@formkit/auto-animate";
 import type { UpdateOrderStatusDto } from "~/types/DTO/OrderDtoType";
 import { OrderStatus } from "~/types/OrderType";
 
