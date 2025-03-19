@@ -1,7 +1,7 @@
 <template>
   <div class="h-16"></div>
   <header
-    class="flex justify-between items-center w-full px-8 py-2 bg-gray-800/90 text-white fixed top-0 z-10 h-16"
+    class="flex justify-between items-center w-full px-8 py-2 fixed top-0 z-10 h-16 border-b border-gray-600/30 bg-opacity-70 backdrop-blur-md saturate-50 dot-pattern"
   >
     <div class="flex items-center gap-1">
       <el-avatar
@@ -21,7 +21,8 @@
         ></el-button
       >
     </div>
-    <div>
+    <div class="flex items-center gap-2">
+      <ToggleDarkButton />
       <el-input v-model="keyword" placeholder="搜索商品" @change="handleSearch">
         <template #prepend>
           <el-button :icon="Search" />

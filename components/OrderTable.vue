@@ -11,7 +11,12 @@
             v-for="item of row.orderItems"
             :key="item.id"
           >
-            <el-image :src="item.product.image" class="size-24" fit="cover" />
+            <el-image
+              :src="item.product.image"
+              @click.stop="handleClickProduct(item.product.id)"
+              class="size-24 cursor-pointer"
+              fit="cover"
+            />
             <el-text type="info">{{ item.product.name }}</el-text>
             <el-text type="info" size="small">{{ item.quantity }}件</el-text>
           </div>
@@ -83,6 +88,11 @@ const orderStatusFilterMethod = (value: string, row: any) =>
 const handlePay = (id: string) => {
   const router = useRouter();
   router.push(`/orders/${id}`);
+};
+
+const handleClickProduct = (id: string) => {
+  const router = useRouter();
+  router.push(`/products/${id}`);
 };
 
 const handleWheel = (e: WheelEvent) => {
