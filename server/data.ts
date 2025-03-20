@@ -13,7 +13,7 @@ export const productCardList: ProductCardType[] = [
   },
   {
     id: "2",
-    name: "商品2",
+    name: "商品2一个超长名字在商品卡片上展示会不会有问题",
     price: 200.99,
     image: "/images/placeholder.png",
     soldCount: 200,

@@ -7,7 +7,7 @@
           @wheel.stop="handleWheel"
         >
           <div
-            class="flex flex-col items-center"
+            class="flex flex-col items-center max-w-24"
             v-for="item of row.orderItems"
             :key="item.id"
           >
@@ -17,7 +17,7 @@
               class="size-24 cursor-pointer"
               fit="cover"
             />
-            <el-text type="info">{{ item.product.name }}</el-text>
+            <el-text type="info" truncated>{{ item.product.name }}</el-text>
             <el-text type="info" size="small">{{ item.quantity }}件</el-text>
           </div>
         </div>
@@ -28,11 +28,17 @@
         <PriceDisplay :price="row.orderTotal" />
       </template>
     </el-table-column>
-    <el-table-column
-      prop="orderTime"
-      label="创建时间"
-      :formatter="(row: any) => new Date(row.orderTime).toLocaleString()"
-    >
+    <el-table-column label="订单号">
+      <el-table-column label="创建时间" width="160">
+        <template #default="{ row }">
+          <div class="flex flex-col">
+            <el-text type="info">{{ row.id }}</el-text>
+            <el-text type="info" size="small">{{
+              new Date(row.orderTime).toLocaleString()
+            }}</el-text>
+          </div>
+        </template>
+      </el-table-column>
     </el-table-column>
     <el-table-column
       prop="orderStatus"

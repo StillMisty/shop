@@ -16,4 +16,15 @@ export class ApiResponse<T = any> {
       msg,
     };
   }
+
+  static handleApiResponse = <T>(response: ApiResponse<T>): T => {
+    if (response.success) {
+      if (response.data === undefined) {
+        throw new Error("data未定义");
+      }
+      return response.data;
+    } else {
+      throw new Error(response.msg);
+    }
+  };
 }

@@ -3,7 +3,7 @@
     <el-card shadow="hover" @click="handleInfo">
       <img :src="props.image" class="w-full h-48 object-cover" />
       <div class="p-4">
-        <h3 class="text-lg font-semibold">{{ props.name }}</h3>
+        <el-text size="large" truncated>{{ props.name }}</el-text>
         <div class="flex justify-between items-center w-full">
           <PriceDisplay :price="props.price"></PriceDisplay>
           <el-button type="primary" @click.stop="addCart">加入购物车</el-button>
