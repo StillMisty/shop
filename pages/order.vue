@@ -48,5 +48,8 @@ const handleUpdateOrderStatus = async (
     (order) => order.id === updateOrderStatusDto.orderId,
   );
   order.value = foundOrder || null;
+  ElMessageBox.alert("支付成功", "支付成功", {
+    type: "success",
+  });
 };
 </script>
