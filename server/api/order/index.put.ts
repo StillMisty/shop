@@ -18,5 +18,5 @@ export default defineEventHandler(async (event) => {
   order.orderStatus = body.newStatus;
   await useStorage().setItem(`order:${body.orderId}`, order);
 
-  return ApiResponse.success(body);
+  return ApiResponse.success(order);
 });

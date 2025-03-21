@@ -1,4 +1,9 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/vue-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  type QueryFilters,
+} from "@tanstack/vue-query";
 import { ApiResponse } from "~/types/DTO/ApiResponse";
 import type {
   CreateOrderDto,
@@ -51,8 +56,18 @@ export function useOrder() {
     });
   };
 
+  const orderUpdate = useMutation({
+    mutationFn: updateOrder,
+    onSuccess: (data: OrderType) => {
+      console.log("orderUpdate onSuccess", data);
+
+      queryClient.setQueriesData(["order", data.id] as QueryFilters, data);
+    },
+  });
+
   return {
     ordersQuery,
     orderQuery,
+    orderUpdate,
   };
 }
