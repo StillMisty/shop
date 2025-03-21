@@ -53,6 +53,7 @@ export function useOrder() {
     return useQuery({
       queryKey: ["order", orderId],
       queryFn: () => fetchOrder(orderId),
+      enabled: !!orderId,
     });
   };
 
@@ -60,12 +61,12 @@ export function useOrder() {
     mutationFn: updateOrder,
     onSuccess: (data: OrderType) => {
       console.log("orderUpdate onSuccess", data);
-
       queryClient.setQueriesData(["order", data.id] as QueryFilters, data);
     },
   });
 
   return {
+    fetchOrder,
     ordersQuery,
     orderQuery,
     orderUpdate,

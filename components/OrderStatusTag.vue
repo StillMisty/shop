@@ -7,9 +7,12 @@
 <script lang="ts" setup>
 import { OrderStatus } from "~/types/OrderType";
 
-defineProps<{
-  orderStatus: OrderStatus;
-}>();
+defineProps({
+  orderStatus: {
+    type: String as PropType<OrderStatus>,
+    required: true,
+  },
+});
 
 const getTagType = (orderStatus: OrderStatus) => {
   switch (orderStatus) {

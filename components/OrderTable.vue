@@ -6,20 +6,13 @@
           class="flex items-center gap-3 overflow-x-auto"
           @wheel.stop="handleWheel"
         >
-          <div
-            class="flex flex-col items-center max-w-24"
+          <ProductDisplay
             v-for="item of row.orderItems"
             :key="item.id"
-          >
-            <el-image
-              :src="item.product.image"
-              @click.stop="handleClickProduct(item.product.id)"
-              class="size-24 cursor-pointer"
-              fit="cover"
-            />
-            <el-text type="info" truncated>{{ item.product.name }}</el-text>
-            <el-text type="info" size="small">{{ item.quantity }}件</el-text>
-          </div>
+            :image="item.product.image"
+            :name="item.product.name"
+            :quantity="item.quantity"
+          />
         </div>
       </template>
     </el-table-column>
@@ -53,7 +46,7 @@
           <el-button
             type="primary"
             size="small"
-            @click.stop="handlePay(row.id)"
+            @click.stop="handleInfo(row.id)"
           >
             订单详情
           </el-button>
@@ -66,10 +59,16 @@
 <script lang="ts" setup>
 import PriceDisplay from "./PriceDisplay.vue";
 import gsap from "gsap";
-import { OrderStatus } from "~/types/OrderType";
+import { OrderStatus, type OrderType } from "~/types/OrderType";
 
-const orderStore = useMyOrderStore();
-const { orders } = storeToRefs(orderStore);
+defineProps({
+  orders: {
+    type: Array<OrderType>,
+    required: true,
+  },
+});
+
+const emit = defineEmits(["info"]);
 
 const orderStatusFilters = [
   { text: "待支付", value: OrderStatus.PENDING_PAYMENT },
@@ -85,9 +84,8 @@ const orderStatusFilters = [
 const orderStatusFilterMethod = (value: string, row: any) =>
   row.orderStatus === value;
 
-const handlePay = (id: string) => {
-  const router = useRouter();
-  router.push(`/orders/${id}`);
+const handleInfo = (id: string) => {
+  emit("info", id);
 };
 
 const handleClickProduct = (id: string) => {

@@ -1,25 +1,19 @@
-<script setup>
-import { VueLenis } from "lenis/vue";
-</script>
-
 <template>
-  <VueLenis root>
-    <div>
-      <NuxtLayout>
-        <NuxtPage />
-      </NuxtLayout>
-    </div>
-  </VueLenis>
+  <div>
+    <AppHeader />
+    <main class="min-h-[calc(100vh-64px)] h-[calc(100vh-64px)]">
+      <index />
+      <cart />
+      <order />
+    </main>
+    <AppFooter />
+  </div>
 </template>
 
-<style>
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.3s;
-}
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-  transform: translateY(20px);
-}
-</style>
+<script setup>
+import AppFooter from "~/components/AppFooter.vue";
+import AppHeader from "~/components/AppHeader.vue";
+import cart from "~/pages/cart.vue";
+import index from "~/pages/index.vue";
+import order from "~/pages/order.vue";
+</script>

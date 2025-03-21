@@ -69,6 +69,9 @@ const handleSettlement = async () => {
         type: "info",
         message: "已取消支付",
       });
+    })
+    .finally(() => {
+      orderStore.fetchOrders();
     });
 };
 </script>
