@@ -1,7 +1,7 @@
 <template>
   <div>
     <AppHeader />
-    <main class="min-h-[calc(100vh-64px)]">
+    <main class="min-h-[calc(100vh-64px)] h-[calc(100vh-64px)]">
       <slot />
     </main>
     <AppFooter />

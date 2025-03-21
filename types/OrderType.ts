@@ -1,4 +1,5 @@
 import type { ProductCardType } from "./ProductCardType";
+import type { ReceivingInfoType } from "./ReceivingInfoType";
 
 type OrderItemType = {
   product: ProductCardType;
@@ -22,4 +23,5 @@ export type OrderType = {
   orderStatus: OrderStatus;
   orderTotal: number;
   orderItems: OrderItemType[];
+  receivingInfo: ReceivingInfoType;
 };

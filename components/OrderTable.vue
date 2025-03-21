@@ -56,12 +56,11 @@
             {{ row.orderStatus }}
           </el-tag>
           <el-button
-            v-if="row.orderStatus === OrderStatus.PENDING_PAYMENT"
             type="primary"
             size="small"
             @click.stop="handlePay(row.id)"
           >
-            前去支付
+            订单详情
           </el-button>
         </div>
       </template>
