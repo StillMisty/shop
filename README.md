@@ -1,8 +1,11 @@
 # Shop
 
 作为某人在辜的Web前端框架应用与开发课的作业
+
 开源地址 https://github.com/StillMisty/shop
+
 为了整合近期所学，使用的技术栈比较激进。
+
 你会看到有的地方使用比较老旧的写法，有的部分又十分激进，那就是我在边学边写。
 
 - Nuxt3 : SSR 的全栈框架
@@ -31,16 +34,17 @@ pnpm install
 
 ## Development Server
 
-启动开发 `http://localhost:3000`:
-
 ```bash
+# 启动开发服务器
 pnpm dev
 ```
 
 ## Production
 
-打包生产环境:
-
 ```bash
+# 打包
 pnpm build
+
+# 启动生产环境
+node .output/server/index.mjs
 ```
