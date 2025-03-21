@@ -9,8 +9,11 @@ export default defineNuxtConfig({
       apiUrl: process.env.API_URL || "http://localhost:3000/api",
     },
   },
-
-  css: ["~/assets/css/main.css", "element-plus/theme-chalk/dark/css-vars.css"],
+  elementPlus: {
+    themes: ["dark"],
+    defaultLocale: "zh-CN",
+  },
+  css: ["~/assets/css/main.css"],
   app: {
     pageTransition: {
       name: "page",

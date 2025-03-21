@@ -48,3 +48,5 @@ pnpm build
 # 启动生产环境
 node .output/server/index.mjs
 ```
+
+因为我设置的 API 地址为 `http://localhost:3000/api`，访问打包出的页面时请访问 `http://localhost:3000` 否则会出现跨域问题
