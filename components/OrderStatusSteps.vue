@@ -1,5 +1,5 @@
 <template>
-  <el-steps :active="active" finish-status="success">
+  <el-steps :active="active" finish-status="success" align-center>
     <el-step :title="OrderStatus.PENDING_PAYMENT" />
     <el-step :title="OrderStatus.PAID" />
     <el-step :title="OrderStatus.PROCESSING" />

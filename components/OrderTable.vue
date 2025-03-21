@@ -49,12 +49,7 @@
     >
       <template #default="{ row }">
         <div class="flex justify-between items-center">
-          <el-tag
-            :type="row.orderStatus === OrderStatus.PAID ? 'success' : 'info'"
-            size="small"
-          >
-            {{ row.orderStatus }}
-          </el-tag>
+          <OrderStatusTag :orderStatus="row.orderStatus" />
           <el-button
             type="primary"
             size="small"
