@@ -46,23 +46,15 @@ const handleSettlement = async () => {
     `订单号：${data?.id}\n共: ￥${data?.orderTotal}`,
     "结账",
     {
-      confirmButtonText: "支付",
+      confirmButtonText: "前去支付",
       cancelButtonText: "暂不支付",
       type: "success",
       center: true,
     },
   )
     .then(() => {
-      const updateOrderStatusDto: UpdateOrderStatusDto = {
-        orderId: data.id,
-        newStatus: OrderStatus.PAID,
-      };
-      orderStore.updateOrder(updateOrderStatusDto);
-
-      ElMessage({
-        type: "success",
-        message: "支付成功",
-      });
+      const router = useRouter();
+      router.push(`/orders/${data?.id}`);
     })
     .catch(() => {
       ElMessage({
