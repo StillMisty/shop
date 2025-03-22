@@ -47,6 +47,11 @@ pnpm build
 
 # 启动生产环境
 node .output/server/index.mjs
+
+# 或者使用 pm2
+pm2 start
 ```
 
-因为我设置的 API 地址为 `http://localhost:3000/api`，访问打包出的页面时请访问 `http://localhost:3000` 否则会出现跨域问题
+因为我设置的 API 地址为 `http://localhost:3000/api`，访问打包出的页面时请访问 `http://localhost:3000` 否则会出现跨域问题,。
+
+也可选择在 `nuxt.config.ts` 中修改 `apiUrl` 选项。
