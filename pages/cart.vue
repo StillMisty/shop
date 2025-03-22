@@ -27,11 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { UpdateOrderStatusDto } from "~/types/DTO/OrderDtoType";
-import { OrderStatus } from "~/types/OrderType";
-
 const shoppingCartStore = useMyShoppingCartStore();
-const orderStore = useMyOrderStore();
 
 const handleSettlement = async () => {
   const data = await shoppingCartStore.settlement();
