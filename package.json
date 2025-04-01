@@ -13,7 +13,7 @@
     "@element-plus/nuxt": "^1.1.1",
     "@formkit/auto-animate": "^0.8.2",
     "@pinia/nuxt": "^0.10.1",
-    "@tanstack/vue-query": "^5.69.0",
+    "@tanstack/vue-query": "^5.71.1",
     "@vueuse/core": "^13.0.0",
     "@vueuse/nuxt": "^13.0.0",
     "gsap": "^3.12.7",
