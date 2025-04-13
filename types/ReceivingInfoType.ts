@@ -3,6 +3,4 @@ export type ReceivingInfoType = {
   name: string;
   phone: string;
   address: string;
-  default: boolean;
-  userId: string;
 };

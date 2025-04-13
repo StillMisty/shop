@@ -1,7 +1,7 @@
 export class ApiResponse<T = any> {
   success: boolean = false;
   data?: T;
-  msg?: string;
+  message?: string;
 
   static success<T>(data?: T): ApiResponse<T> {
     return {
@@ -13,7 +13,7 @@ export class ApiResponse<T = any> {
   static fail<T>(msg: string): ApiResponse<T> {
     return {
       success: false,
-      msg,
+      message: msg,
     };
   }
 
@@ -24,7 +24,7 @@ export class ApiResponse<T = any> {
       }
       return response.data;
     } else {
-      throw new Error(response.msg);
+      throw new Error(response.message);
     }
   };
 }
