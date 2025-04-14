@@ -8,7 +8,7 @@
         <el-avatar
           fit="cover"
           alt="前往用户空间"
-          :src="meInfo?.avatar ?? '/images/photo.jpg'"
+          :src="meInfo?.avatar ?? '/images/photo.webp'"
           class="mr-2 cursor-pointer"
       /></NuxtLink>
       <el-button><NuxtLink to="/">首页</NuxtLink></el-button>

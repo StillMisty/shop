@@ -18,8 +18,8 @@ importers:
         specifier: ^0.11.0
         version: 0.11.0(magicast@0.3.5)(pinia@3.0.1(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2)))
       '@tanstack/vue-query':
-        specifier: ^5.74.0
-        version: 5.74.0(vue@3.5.13(typescript@5.8.2))
+        specifier: ^5.74.2
+        version: 5.74.2(vue@3.5.13(typescript@5.8.2))
       '@vueuse/core':
         specifier: ^13.1.0
         version: 13.1.0(vue@3.5.13(typescript@5.8.2))
@@ -1012,11 +1012,11 @@ packages:
     resolution: {integrity: sha512-Wo1iKt2b9OT7d+YGhvEPD3DXvPv2etTusIMhMUoG7fbhmxcXCtIjJDEygy91Y2JFlwGyjqiBPRozme7UD8hoqg==}
     engines: {node: '>=12'}
 
-  '@tanstack/query-core@5.74.0':
-    resolution: {integrity: sha512-kMqBfXA06INskI06rm+abAY3/Vi/Kq1nRNfLbpwuhuMJ5lMAI5qASretlvjEO5OJoze6w7OB3pNvsbztirIWWQ==}
+  '@tanstack/query-core@5.74.2':
+    resolution: {integrity: sha512-zxiLXIJ0TYsemnkL04qXWRxHSPiJbDfkaCUFbDz5pE2CUQBGoU6Xg3oPWkpQrz0G/7T+kMV7gtvXCrz/pCtoAg==}
 
-  '@tanstack/vue-query@5.74.0':
-    resolution: {integrity: sha512-YP6muhx9R9O5jPu3HV1b5fMLf/X+8PJmv1X1iOTdrBr394RVhMxWzTsyTwdrDLs1ydJBfOnop7ZFFCex5LlozA==}
+  '@tanstack/vue-query@5.74.2':
+    resolution: {integrity: sha512-tl+hrXH+FTcwrb9gX7SPzx2a6wa6tJYScUKoJSTJNWOa8NYaU/dL4myM9hyfhPLAFCDfBlvlpIRL2AziDt5Rkg==}
     peerDependencies:
       '@vue/composition-api': ^1.1.2
       vue: ^2.6.0 || ^3.3.0
@@ -1862,8 +1862,8 @@ packages:
   git-up@8.1.1:
     resolution: {integrity: sha512-FDenSF3fVqBYSaJoYy1KSc2wosx0gCvKP+c+PRBht7cAaiCeQlBtfBDX9vgnNOHmdePlSFITVcn4pFfcgNvx3g==}
 
-  git-url-parse@16.0.1:
-    resolution: {integrity: sha512-mcD36GrhAzX5JVOsIO52qNpgRyFzYWRbU1VSRFCvJt1IJvqfvH427wWw/CFqkWvjVPtdG5VTx4MKUeC5GeFPDQ==}
+  git-url-parse@16.0.2:
+    resolution: {integrity: sha512-Q+G3aB2nqvnM30BS+fR/fLNOK79k03+ii/UIS33F0ScHVTLWV+OKc/Yl9w+8o6V2Hf1xfhaYldh1y0M6cFY1YQ==}
 
   glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
@@ -4124,7 +4124,7 @@ snapshots:
       consola: 3.4.2
       destr: 2.0.5
       dotenv: 16.5.0
-      git-url-parse: 16.0.1
+      git-url-parse: 16.0.2
       is-docker: 3.0.0
       ofetch: 1.4.1
       package-manager-detector: 1.1.0
@@ -4520,12 +4520,12 @@ snapshots:
     dependencies:
       remove-accents: 0.5.0
 
-  '@tanstack/query-core@5.74.0': {}
+  '@tanstack/query-core@5.74.2': {}
 
-  '@tanstack/vue-query@5.74.0(vue@3.5.13(typescript@5.8.2))':
+  '@tanstack/vue-query@5.74.2(vue@3.5.13(typescript@5.8.2))':
     dependencies:
       '@tanstack/match-sorter-utils': 8.19.4
-      '@tanstack/query-core': 5.74.0
+      '@tanstack/query-core': 5.74.2
       '@vue/devtools-api': 6.6.4
       vue: 3.5.13(typescript@5.8.2)
       vue-demi: 0.14.10(vue@3.5.13(typescript@5.8.2))
@@ -5488,7 +5488,7 @@ snapshots:
       is-ssh: 1.4.1
       parse-url: 9.2.0
 
-  git-url-parse@16.0.1:
+  git-url-parse@16.0.2:
     dependencies:
       git-up: 8.1.1
 
