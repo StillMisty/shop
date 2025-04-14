@@ -6,12 +6,43 @@ import type { LoginRequest } from "~/types/LoginRequest";
 export function useAuth() {
   const apiUrl = useRuntimeConfig().public.apiUrl;
 
-  const token = useLocalStorage("auth-token", "");
+  const authToken = useState<string | null>("auth-token", () => null);
+
+  // 从 localStorage 获取令牌
+  const initAuth = () => {
+    if (import.meta.client) {
+      const savedToken = localStorage.getItem("auth-token");
+      if (savedToken) {
+        authToken.value = savedToken;
+      }
+    }
+  };
+
+  // 仅在客户端调用初始化
+  if (import.meta.client) {
+    initAuth();
+  }
+
+  // 保存令牌到 localStorage
+  const saveToken = (token: string) => {
+    if (import.meta.client) {
+      localStorage.setItem("auth-token", token);
+      authToken.value = token;
+    }
+  };
+
+  // 清除 localStorage 中的令牌
+  const clearToken = () => {
+    if (import.meta.client) {
+      localStorage.removeItem("auth-token");
+      authToken.value = null;
+    }
+  };
 
   const register = async (
     userData: LoginRequest,
   ): Promise<ApiResponse<LoginResponse>> => {
-    const data: ApiResponse<LoginResponse> = await $fetch(
+    const data = await $fetch<ApiResponse<LoginResponse>>(
       `${apiUrl}/api/auth/register`,
       {
         method: "POST",
@@ -24,8 +55,8 @@ export function useAuth() {
   const login = async (
     userData: LoginRequest,
   ): Promise<ApiResponse<LoginResponse>> => {
-    const data: ApiResponse<LoginResponse> = await $fetch(
-      `${apiUrl}/auth/login`,
+    const data = await $fetch<ApiResponse<LoginResponse>>(
+      `${apiUrl}/api/auth/login`,
       {
         method: "POST",
         body: userData,
@@ -41,7 +72,7 @@ export function useAuth() {
     mutationFn: (userData: LoginRequest) => register(userData),
     onSuccess: (response) => {
       if (response.success && response.data?.token) {
-        token.value = response.data.token;
+        saveToken(response.data.token); // 使用辅助函数保存令牌
         ElMessage.success("注册成功！");
       } else {
         // API返回了成功状态但业务逻辑失败
@@ -60,7 +91,7 @@ export function useAuth() {
     mutationFn: (userData: LoginRequest) => login(userData),
     onSuccess: (data) => {
       if (data.data?.token) {
-        token.value = data.data.token;
+        saveToken(data.data.token); // 使用辅助函数保存令牌
         ElMessage.success("登录成功！");
       }
     },
@@ -74,11 +105,11 @@ export function useAuth() {
   });
 
   const logout = () => {
-    token.value = "";
+    clearToken(); // 使用辅助函数清除令牌
     ElMessage.success("已登出");
   };
 
-  const isAuthenticated = computed(() => !!token.value);
+  const isAuthenticated = computed(() => !!authToken.value);
 
   return {
     register: registerMutation.mutateAsync,
@@ -88,7 +119,7 @@ export function useAuth() {
     isLoggingIn: loginMutation.isPending,
     registerError: registerMutation.error,
     loginError: loginMutation.error,
-    token: readonly(token),
+    token: readonly(authToken),
     isAuthenticated,
   };
 }

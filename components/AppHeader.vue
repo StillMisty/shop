@@ -4,12 +4,13 @@
     class="flex justify-between items-center w-full px-8 py-2 fixed top-0 z-10 h-16 border-b border-gray-600/30 bg-opacity-70 backdrop-blur-md saturate-50 dot-pattern"
   >
     <div class="flex items-center gap-1">
-      <el-avatar
-        fit="cover"
-        alt="用户头像"
-        src="/images/photo.jpg"
-        class="mr-2 cursor-pointer"
-      />
+      <NuxtLink to="/me">
+        <el-avatar
+          fit="cover"
+          alt="前往用户空间"
+          :src="meInfo?.avatar ?? '/images/photo.jpg'"
+          class="mr-2 cursor-pointer"
+      /></NuxtLink>
       <el-button><NuxtLink to="/">首页</NuxtLink></el-button>
       <el-button><NuxtLink to="/order">订单中心</NuxtLink></el-button>
       <el-button
@@ -46,6 +47,7 @@
 
 <script lang="ts" setup>
 import { Search } from "lucide-vue-next";
+import { useMe } from "~/api/useMe";
 import { useMyShoppingCartStore } from "~/stores/ShoppingCart";
 import { ProduceSearchType } from "~/types/DTO/ProductQuery";
 
@@ -67,4 +69,6 @@ const handleSearch = async () => {
     type.value,
   );
 };
+
+const { meInfo } = useMe();
 </script>

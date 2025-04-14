@@ -4,9 +4,7 @@
   >
     <div class="w-full max-w-md space-y-8">
       <div class="text-center">
-        <h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">
-          创建账号
-        </h2>
+        <h2 class="mt-6 text-3xl font-bold tracking-tight">创建账号</h2>
         <p class="mt-2 text-sm text-gray-600">
           或者
           <NuxtLink

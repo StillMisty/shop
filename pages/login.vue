@@ -4,9 +4,7 @@
   >
     <div class="w-full max-w-md space-y-8">
       <div class="text-center">
-        <h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">
-          登陆账号
-        </h2>
+        <h2 class="mt-6 text-3xl font-bold tracking-tight">登陆账号</h2>
         <p class="mt-2 text-sm text-gray-600">
           或者
           <NuxtLink
@@ -132,7 +130,10 @@ const submitForm = async () => {
         await login(LoginRequest.value);
         // 登录成功，会自动触发 loginMutation 中的 onSuccess 回调
         // 可以在这里进行其他操作，比如导航到首页
-        navigateTo("/");
+        const route = useRoute();
+        route.query.redirect = route.query.redirect || "/";
+        const router = useRouter();
+        router.push(route.query.redirect as string);
       } catch (error) {
         console.error("登录失败:", error);
       } finally {
