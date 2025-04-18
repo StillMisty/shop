@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import type { ApiResponse } from "~/types/DTO/ApiResponse";
+import type { PasswordResetRequest } from "~/types/DTO/PasswordResetRequest";
 import type { Users } from "~/types/Users";
 
 export function useMe() {
@@ -15,15 +16,13 @@ export function useMe() {
   };
 
   const patchPassword = async (
-    password: string,
+    passwordResetRequest: PasswordResetRequest,
   ): Promise<ApiResponse<Users>> => {
     const data = await $fetch<ApiResponse<Users>>(
       `${apiUrl}/api/users/me/password`,
       {
         method: "PATCH",
-        body: {
-          password,
-        },
+        body: passwordResetRequest,
       },
     );
     return data;
@@ -63,7 +62,8 @@ export function useMe() {
   });
 
   const patchPasswordMutation = useMutation({
-    mutationFn: (password: string) => patchPassword(password),
+    mutationFn: (passwordResetRequest: PasswordResetRequest) =>
+      patchPassword(passwordResetRequest),
     onSuccess: (res) => {
       console.log("res", res);
       if (res.success) {
@@ -94,8 +94,6 @@ export function useMe() {
 
   return {
     meInfoQuery,
-    meInfo,
-    isQuery: meInfoQuery.isLoading,
     patchPasswordMutation,
     patchNicknameMutation,
     patchAvatarMutation,

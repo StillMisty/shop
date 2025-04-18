@@ -78,43 +78,15 @@ const LoginRequest: Ref<LoginRequest> = ref({
   username: "",
 });
 
-const confirmPassword = ref("");
 const loading = ref(false);
 const formRef = ref<FormInstance>();
 const formIsValid = computed(
   () => LoginRequest.value.username && LoginRequest.value.password,
 );
 
-const validatePass = (rule: any, value: string, callback: any) => {
-  if (value === "") {
-    callback(new Error("请输入密码"));
-  } else {
-    if (confirmPassword.value !== "") {
-      if (formRef.value) formRef.value.validateField("confirmPassword");
-    }
-    callback();
-  }
-};
-
 const rules: FormRules = {
-  username: [
-    { required: true, message: "请输入用户名", trigger: "blur" },
-    { min: 6, max: 20, message: "用户名长度应该在6~20之间", trigger: "blur" },
-    {
-      pattern: /^[a-zA-Z0-9_]+$/,
-      message: "用户名只能包含字母、数字和下划线",
-      trigger: "blur",
-    },
-  ],
-  password: [
-    { required: true, validator: validatePass, trigger: "blur" },
-    { min: 6, max: 20, message: "密码长度应该在6~20之间", trigger: "blur" },
-    {
-      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
-      message: "密码必须包含至少一个大写字母、一个小写字母和一个数字",
-      trigger: "blur",
-    },
-  ],
+  username: usernameRules,
+  password: passwordRules,
 };
 
 const { login } = useAuth();

@@ -78,7 +78,6 @@
 
 <script lang="ts" setup>
 import { User, Lock } from "@element-plus/icons-vue";
-import { useMutation } from "@tanstack/vue-query";
 import type { FormInstance, FormRules } from "element-plus";
 import { useAuth } from "~/api/useAuth";
 import type { LoginRequest } from "~/types/LoginRequest";
@@ -102,49 +101,21 @@ const formIsValid = computed(
     confirmPassword.value === registerRequest.value.password,
 );
 
-const validatePass = (rule: any, value: string, callback: any) => {
-  if (value === "") {
-    callback(new Error("请输入密码"));
-  } else {
-    if (confirmPassword.value !== "") {
-      if (formRef.value) formRef.value.validateField("confirmPassword");
-    }
-    callback();
-  }
-};
-
-const validateConfirmPass = (rule: any, value: string, callback: any) => {
-  // 直接使用 confirmPassword.value，不依赖于 value 参数
-  if (confirmPassword.value === "") {
-    callback(new Error("请再次输入密码"));
-  } else if (confirmPassword.value !== registerRequest.value.password) {
-    callback(new Error("两次输入密码不一致!"));
-  } else {
-    callback();
-  }
-};
-
 const rules: FormRules = {
-  username: [
-    { required: true, message: "请输入用户名", trigger: "blur" },
-    { min: 6, max: 20, message: "用户名长度应该在6~20之间", trigger: "blur" },
-    {
-      pattern: /^[a-zA-Z0-9_]+$/,
-      message: "用户名只能包含字母、数字和下划线",
-      trigger: "blur",
-    },
-  ],
-  password: [
-    { required: true, validator: validatePass, trigger: "blur" },
-    { min: 6, max: 20, message: "密码长度应该在6~20之间", trigger: "blur" },
-    {
-      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
-      message: "密码必须包含至少一个大写字母、一个小写字母和一个数字",
-      trigger: "blur",
-    },
-  ],
+  username: usernameRules,
+  password: passwordRules,
   confirmPassword: [
-    { required: true, validator: validateConfirmPass, trigger: "blur" },
+    { required: true, message: "请再次输入密码", trigger: "blur" },
+    {
+      validator: (rule, value, callback) => {
+        if (value !== registerRequest.value.password) {
+          callback(new Error("两次输入的密码不一致"));
+        } else {
+          callback();
+        }
+      },
+      trigger: "blur",
+    },
   ],
 };
 
