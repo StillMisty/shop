@@ -7,21 +7,19 @@
       <p class="text-red-500">加载失败，请稍后再试。</p>
     </div>
 
-    <div v-else-if="meInfo" class="max-w-4xl mx-auto py-8 px-4">
-      <div v-if="meInfo.success">
-        <MeInfoCard :meInfo="meInfo.data" />
-      </div>
-      <div>
-        <PasswordReset />
-      </div>
+    <div
+      v-else-if="meInfo"
+      v-if="meInfo.success"
+      class="max-w-4xl mx-auto py-8 px-4"
+    >
+      <MeInfoCard :meInfo="meInfo.data" class="mb-6" />
+      <WalletCard :wallet="meInfo.data.wallet" class="mb-6" />
+      <PasswordResetCard class="mb-6" />
     </div>
-
-    <!-- 修改密码 -->
   </div>
 </template>
 
 <script lang="ts" setup>
-import MeInfoCard from "../components/MeInfoCard.vue";
 import { LoaderCircle } from "lucide-vue-next";
 import { useMe } from "~/api/useMe";
 

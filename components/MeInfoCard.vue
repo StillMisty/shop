@@ -1,9 +1,7 @@
 <template>
-  <el-card class="mb-6">
+  <el-card>
     <template #header>
-      <div class="card-header">
-        <span>个人资料</span>
-      </div>
+      <span>个人资料</span>
     </template>
 
     <div class="flex flex-col md:flex-row items-start gap-8">

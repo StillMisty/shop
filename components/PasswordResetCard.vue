@@ -1,17 +1,14 @@
 <template>
-  <el-card class="mb-6">
+  <el-card>
     <template #header>
-      <div class="card-header">
-        <span>修改密码</span>
-      </div>
+      <span>修改密码</span>
     </template>
-
     <el-form
       :model="passwordForm"
       :rules="rules"
       ref="passwordFormRef"
       label-width="100px"
-      class="password-form"
+      class="max-w-108 mx-auto"
     >
       <el-form-item label="当前密码" prop="oldPassword">
         <el-input
@@ -116,16 +113,3 @@ const resetForm = () => {
   }
 };
 </script>
-
-<style scoped>
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.password-form {
-  max-width: 500px;
-  margin: 0 auto;
-}
-</style>
