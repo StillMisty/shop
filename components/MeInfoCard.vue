@@ -1,5 +1,11 @@
 <template>
   <el-card class="mb-6">
+    <template #header>
+      <div class="card-header">
+        <span>个人资料</span>
+      </div>
+    </template>
+
     <div class="flex flex-col md:flex-row items-start gap-8">
       <!-- 左侧头像区域 -->
       <AvatarChange
@@ -51,12 +57,21 @@
             {{ formatDate(meInfo.lastLoginTime) }}
           </el-text>
         </div>
+        <div class="flex items-center">
+          <el-text size="large" class="font-medium text-gray-700 min-w-32"
+            >用户状态：</el-text
+          >
+          <el-text size="large">
+            {{ getUserStatusLabel(meInfo.userStatus) }}
+          </el-text>
+        </div>
       </div>
     </div>
   </el-card>
 </template>
 
 <script lang="ts" setup>
+import { get } from "@vueuse/core";
 import { Edit } from "lucide-vue-next";
 import { useMe } from "~/api/useMe";
 import type { Users } from "~/types/Users";

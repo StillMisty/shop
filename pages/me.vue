@@ -8,7 +8,6 @@
     </div>
 
     <div v-else-if="meInfo" class="max-w-4xl mx-auto py-8 px-4">
-      <h1 class="text-2xl font-bold mb-6">个人资料</h1>
       <div v-if="meInfo.success">
         <MeInfoCard :meInfo="meInfo.data" />
       </div>

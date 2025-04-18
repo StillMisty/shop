@@ -1,5 +1,4 @@
 <template>
-  <!-- 修改密码卡片 -->
   <el-card class="mb-6">
     <template #header>
       <div class="card-header">
