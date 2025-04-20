@@ -5,7 +5,7 @@
       <div class="p-4">
         <el-text size="large" truncated>{{ props.name }}</el-text>
         <div class="flex justify-between items-center w-full">
-          <PriceDisplay :price="props.price"></PriceDisplay>
+          <PriceDisplay :price="props.price" />
           <el-button type="primary" @click.stop="addCart">加入购物车</el-button>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { OrderStatus } from "../OrderType";
+import type { OrderStatus } from "../OrderType";
 
 // 创建订单时的请求 DTO
 export type CreateOrderDto = {

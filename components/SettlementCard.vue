@@ -9,8 +9,8 @@
       <el-button
         type="primary"
         class="w-full"
-        @click="emit('settlement')"
         :disabled="totalPrice <= 0"
+        @click="emit('settlement')"
       >
         去结算
       </el-button>
@@ -24,7 +24,7 @@ import { gsap } from "gsap";
 const props = defineProps({
   totalPrice: {
     type: Number,
-    required: true,
+    required: false,
     default: 0,
   },
 });

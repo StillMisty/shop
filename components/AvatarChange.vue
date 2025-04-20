@@ -1,8 +1,7 @@
 <template>
   <div class="flex flex-col items-center">
     <div class="relative mb-4 group">
-      <el-avatar :src="avatar" :size="160" class="border-2 border-gray-200">
-      </el-avatar>
+      <el-avatar :src="avatar" :size="160" class="border-2 border-gray-200" />
       <div
         class="absolute inset-0 bg-black/50 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer"
         @click="triggerFileInput"

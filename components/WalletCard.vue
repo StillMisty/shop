@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import { Plus, Files } from "lucide-vue-next";
 
-const props = defineProps<{
+defineProps<{
   wallet: number;
 }>();
 

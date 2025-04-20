@@ -9,7 +9,7 @@
       <AvatarChange
         class="w-full md:w-1/3"
         :avatar="getAvatarWithDefault(meInfo.avatar)"
-        :patchAvatarMutation="patchAvatarMutation"
+        :patch-avatar-mutation="patchAvatarMutation"
       />
 
       <!-- 右侧个人信息区域 -->
@@ -69,7 +69,6 @@
 </template>
 
 <script lang="ts" setup>
-import { get } from "@vueuse/core";
 import { Edit } from "lucide-vue-next";
 import { useMe } from "~/api/useMe";
 import type { Users } from "~/types/Users";
@@ -78,7 +77,7 @@ const props = defineProps<{ meInfo: Users }>();
 
 const { patchNicknameMutation, patchAvatarMutation } = useMe();
 
-let newNickname = ref<string>(props.meInfo.nickname || "");
+const newNickname = ref<string>(props.meInfo.nickname || "");
 const showNicknameDialog = () => {
   ElMessageBox.prompt("请输入新的昵称", "修改昵称", {
     confirmButtonText: "确定",

@@ -52,6 +52,7 @@ export default defineNuxtConfig({
     "lenis/nuxt",
     "@formkit/auto-animate/nuxt",
     "@vueuse/nuxt",
+    "@nuxt/eslint",
   ],
   nitro: {
     routeRules: {

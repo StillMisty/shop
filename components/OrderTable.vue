@@ -7,15 +7,15 @@
           @wheel.stop="handleWheel"
         >
           <div
-            class="flex flex-col items-center max-w-24"
             v-for="item of row.orderItems"
             :key="item.id"
+            class="flex flex-col items-center max-w-24"
           >
             <el-image
               :src="item.product.image"
-              @click.stop="handleClickProduct(item.product.id)"
               class="size-24 cursor-pointer"
               fit="cover"
+              @click.stop="handleClickProduct(item.product.id)"
             />
             <el-text type="info" truncated>{{ item.product.name }}</el-text>
             <el-text type="info" size="small">{{ item.quantity }}件</el-text>
@@ -49,7 +49,7 @@
     >
       <template #default="{ row }">
         <div class="flex justify-between items-center">
-          <OrderStatusTag :orderStatus="row.orderStatus" />
+          <OrderStatusTag :order-status="row.orderStatus" />
           <el-button
             type="primary"
             size="small"

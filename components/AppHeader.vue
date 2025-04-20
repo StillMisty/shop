@@ -1,5 +1,5 @@
 <template>
-  <div class="h-16"></div>
+  <div class="h-16" />
   <header
     class="flex justify-between items-center w-full px-8 py-2 fixed top-0 z-10 h-16 border-b border-gray-600/30 bg-opacity-70 backdrop-blur-md saturate-50 dot-pattern"
   >

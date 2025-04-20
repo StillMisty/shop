@@ -4,9 +4,9 @@
       <span>修改密码</span>
     </template>
     <el-form
+      ref="passwordFormRef"
       :model="passwordForm"
       :rules="rules"
-      ref="passwordFormRef"
       label-width="100px"
       class="max-w-108 mx-auto"
     >
@@ -16,7 +16,7 @@
           type="password"
           show-password
           placeholder="请输入当前密码"
-        ></el-input>
+        />
       </el-form-item>
 
       <el-form-item label="新密码" prop="newPassword">
@@ -25,7 +25,7 @@
           type="password"
           show-password
           placeholder="请输入新密码"
-        ></el-input>
+        />
       </el-form-item>
 
       <el-form-item label="确认新密码" prop="confirmPassword">
@@ -34,11 +34,11 @@
           type="password"
           show-password
           placeholder="请再次输入新密码"
-        ></el-input>
+        />
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="submitForm" :loading="isPending"
+        <el-button type="primary" :loading="isPending" @click="submitForm"
           >修改密码</el-button
         >
         <el-button @click="resetForm">重置</el-button>

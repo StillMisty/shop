@@ -7,10 +7,10 @@
   >
     <template #extra>
       <div class="flex gap-4 items-center">
-        <OrderStatusTag :orderStatus="order.orderStatus" />
+        <OrderStatusTag :order-status="order.orderStatus" />
         <el-button
-          type="primary"
           v-if="order.orderStatus === OrderStatus.PENDING_PAYMENT"
+          type="primary"
           @click="handlePayOrder"
           >支付订单</el-button
         >

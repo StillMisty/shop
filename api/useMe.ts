@@ -90,8 +90,6 @@ export function useMe() {
     },
   });
 
-  const meInfo = computed(() => meInfoQuery.data.value?.data ?? null);
-
   return {
     meInfoQuery,
     patchPasswordMutation,

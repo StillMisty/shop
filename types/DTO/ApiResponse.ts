@@ -20,7 +20,7 @@ export const ApiResponse = {
     };
   },
 
-  fail<T>(msg: string): ErrorResponse {
+  fail(msg: string): ErrorResponse {
     return {
       success: false,
       message: msg,

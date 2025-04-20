@@ -11,14 +11,14 @@
         <el-image class="size-36" fit="cover" :src="props.product.image" />
       </div>
 
-      <PriceDisplay :price="props.product.price"></PriceDisplay>
+      <PriceDisplay :price="props.product.price" />
       <el-input-number
         :model-value="props.quantity"
-        @update:model-value="emit('update:quantity', $event ?? 1)"
         :min="1"
         :max="999"
         :step="1"
         label="数量"
+        @update:model-value="emit('update:quantity', $event ?? 1)"
       />
       <el-button type="danger" @click="() => emit('remove', props.product.id)"
         >删除</el-button
