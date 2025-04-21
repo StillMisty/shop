@@ -1,7 +1,10 @@
 <template>
   <div>
-    <el-card shadow="hover" @click="handleInfo">
-      <product-image-display :product-image="product.productImage" />
+    <el-card shadow="hover" class="cursor-pointer" @click="handleInfo">
+      <product-image-display
+        :product-image="product.productImage"
+        class="h-48"
+      />
       <div class="p-4">
         <el-text size="large" truncated>{{ product.productName }}</el-text>
         <div class="flex justify-between items-center w-full">

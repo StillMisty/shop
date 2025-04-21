@@ -1,10 +1,11 @@
 <template>
   <div>
     <div
+      v-if="productPage && productPage.pages"
       v-infinite-scroll="fetchNextPage"
       infinite-scroll-delay="100"
       infinite-scroll-distance="60"
-      class="grid gap-4 p-16 max-w-7xl mx-auto grid-cols-[repeat(auto-fill,minmax(240px,1fr))] w-full"
+      class="grid gap-4 p-16 max-w-7xl mx-auto grid-cols-[repeat(auto-fill,minmax(260px,1fr))]"
     >
       <template v-for="(products, index) in productPage?.pages" :key="index">
         <ProductCard

@@ -1,16 +1,16 @@
 <template>
   <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
     <!-- 加载状态 -->
-    <div v-if="isPending" class="flex justify-center items-center min-h-[50vh]">
+    <div v-if="isPending" class="flex justify-center items-center">
       <el-skeleton :rows="10" animated />
     </div>
 
     <!-- 错误提示 -->
     <el-result
-      v-else-if="error"
+      v-else-if="isError"
       icon="error"
       title="获取商品信息失败"
-      :sub-title="error"
+      :sub-title="error?.message"
     >
       <template #extra>
         <el-button type="primary">重新加载</el-button>
@@ -22,6 +22,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <!-- 商品图片区域 -->
         <product-image-display
+          class="min-h-96 max-h-[50vh]"
           :product-image="product.productImage"
         ></product-image-display>
 
@@ -135,14 +136,11 @@ import { ShoppingCart } from "@element-plus/icons-vue";
 import { useProduct } from "~/api/useProduct";
 
 const { productQuery } = useProduct();
-const route = useRoute();
-const router = useRouter();
-const { id } = route.params;
+const { id } = useRoute().params;
 
-const error = ref("");
 const quantity = ref(1);
 
-const { data: product, isPending } = productQuery(id as string);
+const { data: product, isPending, isError, error } = productQuery(id as string);
 
 // 添加到购物车
 const addToCart = () => {
@@ -157,6 +155,6 @@ const addToCart = () => {
 // 立即购买
 const buyNow = () => {
   addToCart();
-  router.push("/cart");
+  useRouter().push("/cart");
 };
 </script>

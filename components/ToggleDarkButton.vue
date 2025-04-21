@@ -1,20 +1,14 @@
 <template>
-  <el-button @click="handleToggleDark">
-    <Loader v-if="!isHydrated" class="animate-spin" />
-    <template v-else>
+  <ClientOnly>
+    <el-button @click="handleToggleDark">
       <Sun v-if="!isDark" />
       <Moon v-else />
-    </template>
-  </el-button>
+    </el-button>
+  </ClientOnly>
 </template>
 
 <script lang="ts" setup>
-import { Sun, Moon, Loader } from "lucide-vue-next";
-
-const isHydrated = ref(false);
-onMounted(() => {
-  isHydrated.value = true;
-});
+import { Sun, Moon } from "lucide-vue-next";
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);

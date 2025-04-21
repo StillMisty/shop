@@ -1,13 +1,12 @@
 <template>
   <div
-    class="flex items-center justify-center w-full h-full bg-gray-100 rounded-sm"
+    class="flex items-center justify-center bg-gray-100 rounded-sm overflow-hidden"
   >
     <el-image
       v-if="productImage"
       :src="productImage"
+      class="w-full h-full"
       fit="cover"
-      class="w-full h-full rounded-sm"
-      :preview-src-list="[productImage]"
       alt="商品图片"
     >
       <template #placeholder>
@@ -16,7 +15,7 @@
         </div>
       </template>
     </el-image>
-    <el-empty v-else description="暂无图片"></el-empty>
+    <el-empty v-else :image-size="120" description="暂无图片"></el-empty>
   </div>
 </template>
 
