@@ -49,7 +49,6 @@ export default defineNuxtConfig({
   modules: [
     "@pinia/nuxt",
     "@element-plus/nuxt",
-    "lenis/nuxt",
     "@formkit/auto-animate/nuxt",
     "@vueuse/nuxt",
     "@nuxt/eslint",

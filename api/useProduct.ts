@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/vue-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/vue-query";
 import type { ApiResponse } from "~/types/DTO/ApiResponse";
 import type { PageProductDto } from "~/types/DTO/PageProductDto";
 import type { ProductPageRequest } from "~/types/DTO/ProductPageRequest";
@@ -17,7 +17,7 @@ export function useProduct() {
     );
     if (!data.success) {
       // 处理错误情况
-      console.error("Error fetching product page:", data.message);
+      console.error("获取数据失败:", data.message);
       throw new Error(data.message);
     }
     return data.data;
@@ -32,7 +32,7 @@ export function useProduct() {
     );
     if (!data.success) {
       // 处理错误情况
-      console.error("Error fetching product page:", data.message);
+      console.error("获取数据失败:", data.message);
       throw new Error(data.message);
     }
     return data.data;
@@ -51,7 +51,7 @@ export function useProduct() {
     );
     if (!data.success) {
       // 处理错误情况
-      console.error("Error fetching product page:", data.message);
+      console.error("获取数据失败:", data.message);
       throw new Error(data.message);
     }
     return data.data;
@@ -70,55 +70,18 @@ export function useProduct() {
    * @param productPageRequest 分页请求参数
    * @returns {Product} 查询对象
    */
-  const productPageQuery = useQuery({
-    queryKey: ["productPage", productPageRequest],
-    queryFn: () => fetchProductPage(productPageRequest.value),
-    // 禁用自动重新获取以便手动控制
-    refetchOnWindowFocus: false,
-  });
-
-  /**
-   * 更新分页请求的函数
-   * @param newRequest 新的请求参数
-   */
-  const updatePageRequest = (newRequest: Partial<ProductPageRequest>) => {
-    productPageRequest.value = {
-      ...productPageRequest.value,
-      ...newRequest,
-    };
-  };
-
-  /**
-   * 跳转到指定页码的函数
-   * @param page 页码
-   */
-  const goToPage = (page: number) => {
-    updatePageRequest({ page });
-  };
-
-  /**
-   * 设置每页大小的函数
-   * @param size 每页大小
-   */
-  const setPageSize = (size: number) => {
-    updatePageRequest({ size, page: 0 }); // 改变页大小时重置到第一页
-  };
-
-  /**
-   * 是否有上一页的计算属性
-   */
-  const hasPrevPage = computed(() => {
-    return productPageRequest.value.page > 0;
-  });
-
-  /**
-   * 是否有下一页的计算属性
-   */
-  const hasNextPage = computed(() => {
-    return (
-      productPageRequest.value.page <
-      (productPageQuery.data?.value?.page.totalPages || 0) - 1
-    );
+  const productPageQuery = useInfiniteQuery({
+    queryKey: ["productPage"],
+    queryFn: ({ pageParam = 0 }) =>
+      fetchProductPage({ page: pageParam, size: 10 }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.page.totalPages > lastPage.page.number + 1) {
+        return lastPage.page.number + 1; // 返回下一页的页码
+      } else {
+        return undefined; // 没有下一页
+      }
+    },
+    initialPageParam: 0,
   });
 
   /**
@@ -150,11 +113,6 @@ export function useProduct() {
     // 分页查询相关
     productPageRequest,
     productPageQuery,
-    updatePageRequest,
-    goToPage,
-    setPageSize,
-    hasPrevPage,
-    hasNextPage,
 
     // 单个产品和分类产品查询
     productQuery,

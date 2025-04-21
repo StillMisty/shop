@@ -1,15 +1,11 @@
-<script setup>
-import { VueLenis } from "lenis/vue";
-</script>
+<script setup></script>
 
 <template>
-  <VueLenis root>
-    <div>
-      <NuxtLayout>
-        <NuxtPage />
-      </NuxtLayout>
-    </div>
-  </VueLenis>
+  <div>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </div>
 </template>
 
 <style>
