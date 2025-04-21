@@ -1,22 +1,7 @@
 <template>
-  <div class="w-64">
+  <div>
     <el-card shadow="hover" @click="handleInfo">
-      <el-image
-        :src="product.productImage || ''"
-        class="w-full h-48"
-        fit="cover"
-      >
-        <template #error>
-          <div class="flex items-center justify-center w-full h-full">
-            <ImageOff :size="64" />
-          </div>
-        </template>
-        <template #placeholder>
-          <div class="flex items-center justify-center w-full h-full">
-            <LoaderCircle :size="64" class="animate-spin" />
-          </div>
-        </template>
-      </el-image>
+      <product-image-display :product-image="product.productImage" />
       <div class="p-4">
         <el-text size="large" truncated>{{ product.productName }}</el-text>
         <div class="flex justify-between items-center w-full">
@@ -42,7 +27,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ImageOff, LoaderCircle } from "lucide-vue-next";
 import type { Product } from "~/types/Product";
 
 const product = defineProps<Product>();
