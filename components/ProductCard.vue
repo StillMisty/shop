@@ -8,7 +8,7 @@
       <div class="p-4">
         <el-text size="large" truncated>{{ product.productName }}</el-text>
         <div class="flex justify-between items-center w-full">
-          <product-price-distplay
+          <product-price-display
             :price="product.productPrice"
             :discount="product.productDiscount"
           />

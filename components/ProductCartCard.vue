@@ -10,10 +10,11 @@
         />
         <ProductImageDisplay
           :product-image="product.productImage"
+          class="w-48 h-48"
         ></ProductImageDisplay>
       </div>
 
-      <ProductPriceDistplay
+      <ProductPriceDisplay
         :price="props.product.productPrice"
         :discount="props.product.productDiscount"
       />
@@ -27,7 +28,7 @@
         @update:model-value="emit('update:quantity', $event ?? 1)"
       />
       <el-button type="danger" @click="() => emit('remove', props.cartItemId)">
-        >删除</el-button
+        删除</el-button
       >
     </div>
   </el-card>

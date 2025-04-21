@@ -132,10 +132,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ShoppingCart } from "@element-plus/icons-vue";
+import { ShoppingCart } from "lucide-vue-next";
+import { useCart } from "~/api/useCart";
 import { useProduct } from "~/api/useProduct";
 
 const { productQuery } = useProduct();
+const { cartItemQuantityMutation } = useCart();
+
 const { id } = useRoute().params;
 
 const quantity = ref(1);
@@ -145,6 +148,33 @@ const { data: product, isPending, isError, error } = productQuery(id as string);
 // 添加到购物车
 const addToCart = () => {
   if (!product.value) return;
+  if (product.value.productIsOffShelf) {
+    ElMessage({
+      type: "error",
+      message: "该商品已下架",
+    });
+    return;
+  }
+  if (product.value.productStock <= 0) {
+    ElMessage({
+      type: "warning",
+      message: "该商品已售罄",
+    });
+    return;
+  }
+  if (quantity.value > product.value.productStock) {
+    ElMessage({
+      type: "warning",
+      message: `库存不足，最多可购买 ${product.value.productStock} 件`,
+    });
+    return;
+  }
+
+  cartItemQuantityMutation.mutateAsync({
+    productId: product.value.productId,
+    quantity: quantity.value,
+    increment: true,
+  });
 
   ElMessage({
     type: "success",

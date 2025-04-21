@@ -15,7 +15,10 @@ export function useCart() {
       console.error("获取数据失败:", data.message);
       throw new Error(data.message);
     }
-    return data.data;
+    return data.data.sort((a, b) => {
+      // 按照商品 ID 升序排序
+      return a.product.productId.localeCompare(b.product.productId);
+    });
   };
 
   /**
@@ -60,31 +63,9 @@ export function useCart() {
    * 根据CartItemId删除商品
    */
   const deleteCartItemById = async (cartItemId: string) => {
-    const data: ApiResponse<null> = await $fetch(
-      `${apiUrl}/api/cart/${cartItemId}`,
-      {
-        method: "DELETE",
-      },
-    );
-    if (!data.success) {
-      // 处理错误情况
-      console.error("获取数据失败:", data.message);
-      throw new Error(data.message);
-    }
-  };
-
-  /**
-   * 删除购物车中所有商品
-   */
-  const deleteCartItem = async () => {
-    const data: ApiResponse<null> = await $fetch(`${apiUrl}/api/cart`, {
+    await $fetch(`${apiUrl}/api/cart/${cartItemId}`, {
       method: "DELETE",
     });
-    if (!data.success) {
-      // 处理错误情况
-      console.error("获取数据失败:", data.message);
-      throw new Error(data.message);
-    }
   };
 
   /**
@@ -99,7 +80,7 @@ export function useCart() {
    * 添加商品到购物车
    * @param cartItemChangeRequest 商品 ID 和数量
    */
-  const cartMutation = useMutation({
+  const cartItemQuantityMutation = useMutation({
     mutationFn: postCartItem,
     onSuccess: () => {
       cartQuery.refetch();
@@ -133,19 +114,7 @@ export function useCart() {
   const deleteCartItemMutation = useMutation({
     mutationFn: deleteCartItemById,
     onSuccess: () => {
-      cartQuery.refetch();
-    },
-    onError: (error) => {
-      ElMessage.error(`删除购物车商品失败: ${error.message || "未知错误"}`);
-    },
-  });
-
-  /**
-   * 删除购物车中所有商品
-   */
-  const deleteCartMutation = useMutation({
-    mutationFn: deleteCartItem,
-    onSuccess: () => {
+      ElMessage.success("删除购物车商品成功");
       cartQuery.refetch();
     },
     onError: (error) => {
@@ -190,8 +159,7 @@ export function useCart() {
 
   return {
     cartQuery,
-    cartMutation,
-    deleteCartMutation,
+    cartItemQuantityMutation,
     deleteCartItemMutation,
     isCheckAll,
     patchCartItemMutation,

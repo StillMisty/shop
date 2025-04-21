@@ -23,12 +23,14 @@
       <el-switch v-model="isCheckAll" active-text="全选" />
       <ProductCartCard
         v-for="cartItem in cartData"
-        :key="cartItem.cartItemId"
-        v-model:quantity="cartItem.quantity"
-        v-model:checked="cartItem.checked"
+        :key="cartItem.product.productId"
+        :quantity="cartItem.quantity"
+        :checked="cartItem.checked"
         :cart-item-id="cartItem.cartItemId"
         :product="cartItem.product"
-        @remove="handleReomveCartItem(cartItem.cartItemId)"
+        @update:quantity="handleQuantityChange($event, cartItem)"
+        @update:checked="handleCheckedChange($event, cartItem)"
+        @remove="handleRemoveCartItem(cartItem.cartItemId)"
       />
     </div>
     <div v-else class="flex flex-col gap-4 w-full">
@@ -44,21 +46,34 @@
 
 <script lang="ts" setup>
 import { useCart } from "~/api/useCart";
+import type { CartItem } from "~/types/CartItem";
 
 const {
   cartQuery,
-  cartMutation,
-  deleteCartMutation,
+  patchCartItemMutation,
+  cartItemQuantityMutation,
   isCheckAll,
   deleteCartItemMutation,
   totalPrice,
 } = useCart();
 const { data: cartData, isPending, isError, error } = cartQuery;
 
-const handleReomveCartItem = async (cartItemId: string) => {
+const handleRemoveCartItem = async (cartItemId: string) => {
   await deleteCartItemMutation.mutateAsync(cartItemId);
 };
+const handleQuantityChange = (value: number, cartItem: CartItem) => {
+  cartItemQuantityMutation.mutateAsync({
+    productId: cartItem.product.productId,
+    quantity: value,
+  });
+};
 
+const handleCheckedChange = (value: boolean, cartItem: CartItem) => {
+  patchCartItemMutation.mutateAsync({
+    cartItemId: cartItem.cartItemId,
+    checked: value,
+  });
+};
 const handleSettlement = async () => {
   // const data = 1;
   // if (!data) {
