@@ -18,9 +18,9 @@
 
       <el-card class="mt-8 shadow-md mb-54">
         <el-form
+          ref="formRef"
           :model="LoginRequest"
           :rules="rules"
-          ref="formRef"
           status-icon
           class="space-y-6"
         >
@@ -49,10 +49,10 @@
             <el-button
               type="primary"
               :loading="loading"
-              @click="submitForm"
               class="w-full py-3 text-base font-medium"
               size="large"
               :disabled="!formIsValid"
+              @click="submitForm"
             >
               登陆
             </el-button>

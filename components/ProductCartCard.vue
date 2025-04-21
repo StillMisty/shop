@@ -8,19 +8,25 @@
             emit('update:checked', ($event = !props.checked))
           "
         />
-        <el-image class="size-36" fit="cover" :src="props.product.image" />
+        <ProductImageDisplay
+          :product-image="product.productImage"
+        ></ProductImageDisplay>
       </div>
 
-      <PriceDisplay :price="props.product.price" />
+      <ProductPriceDistplay
+        :price="props.product.productPrice"
+        :discount="props.product.productDiscount"
+      />
+
       <el-input-number
         :model-value="props.quantity"
         :min="1"
-        :max="999"
+        :max="props.product.productStock"
         :step="1"
         label="数量"
         @update:model-value="emit('update:quantity', $event ?? 1)"
       />
-      <el-button type="danger" @click="() => emit('remove', props.product.id)"
+      <el-button type="danger" @click="() => emit('remove', props.cartItemId)">
         >删除</el-button
       >
     </div>
@@ -28,9 +34,9 @@
 </template>
 
 <script lang="ts" setup>
-import type { CartItemType } from "~/types/CartItemType";
+import type { CartItem } from "~/types/CartItem";
 
-const props = defineProps<CartItemType>();
+const props = defineProps<CartItem>();
 const emit = defineEmits<{
   "update:quantity": [value: number];
   "update:checked": [value: boolean];

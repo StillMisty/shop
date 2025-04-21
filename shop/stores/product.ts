@@ -1,6 +1,6 @@
 // filepath: c:\Users\Still\Project\shop\stores\product.ts
-import { ref } from 'vue';
-import { Product } from '../types/Product';
+import type { Product } from "../types/Product";
+import { ref } from "vue";
 
 const products = ref<Product[]>([]);
 const selectedProduct = ref<Product | null>(null);

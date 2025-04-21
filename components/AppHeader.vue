@@ -13,14 +13,7 @@
       /></NuxtLink>
       <el-button><NuxtLink to="/">首页</NuxtLink></el-button>
       <el-button><NuxtLink to="/order">订单中心</NuxtLink></el-button>
-      <el-button
-        ><NuxtLink to="/cart"
-          >购物车
-          {{
-            shoppingCartStore.totalItems ? shoppingCartStore.totalItems : ""
-          }}</NuxtLink
-        ></el-button
-      >
+      <el-button><NuxtLink to="/cart">购物车</NuxtLink></el-button>
     </div>
     <div class="flex items-center gap-2">
       <ToggleDarkButton />
@@ -48,10 +41,9 @@
 <script lang="ts" setup>
 import { Search } from "lucide-vue-next";
 import { useMe } from "~/api/useMe";
-import { useMyShoppingCartStore } from "~/stores/ShoppingCart";
 import { ProduceSearchType } from "~/types/DTO/ProductQuery";
 
-const shoppingCartStore = useMyShoppingCartStore();
+// TODO 购物车项目统计
 const productCardListStore = useMyProductCardListStore();
 const keyword = ref("");
 const type = ref(ProduceSearchType.PRODUCT);

@@ -1,4 +1,4 @@
-import { CartItemType } from "~/types/CartItemType";
+import { CartItemType } from "~/types/CartItem";
 import { ApiResponse } from "~/types/DTO/ApiResponse";
 
 export default defineEventHandler(async () => {

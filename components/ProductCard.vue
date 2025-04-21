@@ -8,20 +8,10 @@
       <div class="p-4">
         <el-text size="large" truncated>{{ product.productName }}</el-text>
         <div class="flex justify-between items-center w-full">
-          <div class="flex items-center gap-2">
-            <el-text
-              v-if="product.productDiscount < 1"
-              type="info"
-              size="small"
-              tag="del"
-              class="ml-1"
-            >
-              {{ product.productPrice?.toFixed(2) }}
-            </el-text>
-            <PriceDisplay
-              :price="product.productPrice * product.productDiscount"
-            />
-          </div>
+          <product-price-distplay
+            :price="product.productPrice"
+            :discount="product.productDiscount"
+          />
           <el-text class="text-xs">销量{{ product.productSoldCount }}</el-text>
         </div>
       </div>
