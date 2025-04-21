@@ -11,11 +11,10 @@
     </div>
 
     <div
-      v-else-if="meInfo"
-      v-if="meInfo.success"
+      v-else-if="meInfo && meInfo.success"
       class="max-w-4xl mx-auto py-8 px-4"
     >
-      <MeInfoCard :meInfo="meInfo.data" class="mb-6" />
+      <MeInfoCard :me-info="meInfo.data" class="mb-6" />
       <WalletCard :wallet="meInfo.data.wallet" class="mb-6" />
       <PasswordResetCard class="mb-6" />
     </div>

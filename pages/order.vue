@@ -1,7 +1,7 @@
 <template>
   <div
-    class="flex justify-center items-center p-16 max-w-7xl mx-auto w-full"
     v-loading="orderStore.loading"
+    class="flex justify-center items-center p-16 max-w-7xl mx-auto w-full"
   >
     <div v-if="orderStore.orders.length === 0">
       <el-empty description="暂无订单" />

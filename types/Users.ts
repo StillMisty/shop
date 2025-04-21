@@ -1,5 +1,5 @@
 export interface Users {
-  avatar?: string;
+  avatar: string | null;
   isAdmin: boolean;
   lastLoginTime: number;
   nickname: string;

@@ -19,7 +19,7 @@ export interface Product {
   /**
    * 商品图片 URL
    */
-  productImage: string;
+  productImage: string | null;
   /**
    * 是否下架
    */

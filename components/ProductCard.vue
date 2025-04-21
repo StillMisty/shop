@@ -1,11 +1,26 @@
 <template>
   <div class="w-64">
     <el-card shadow="hover" @click="handleInfo">
-      <img :src="props.image" class="w-full h-48 object-cover" />
+      <el-image
+        :src="product.productImage || ''"
+        class="w-full h-48"
+        fit="cover"
+      >
+        <template #error>
+          <div class="flex items-center justify-center w-full h-full">
+            <ImageOff :size="64" />
+          </div>
+        </template>
+        <template #placeholder>
+          <div class="flex items-center justify-center w-full h-full">
+            <LoaderCircle :size="64" class="animate-spin" />
+          </div>
+        </template>
+      </el-image>
       <div class="p-4">
-        <el-text size="large" truncated>{{ props.name }}</el-text>
+        <el-text size="large" truncated>{{ product.productName }}</el-text>
         <div class="flex justify-between items-center w-full">
-          <PriceDisplay :price="props.price" />
+          <PriceDisplay :price="product.productPrice" />
           <el-button type="primary" @click.stop="addCart">加入购物车</el-button>
         </div>
       </div>
@@ -14,17 +29,18 @@
 </template>
 
 <script lang="ts" setup>
-import type { ProductCardType } from "~/types/ProductCardType";
+import { ImageOff, LoaderCircle } from "lucide-vue-next";
+import type { Product } from "~/types/Product";
 
 const emit = defineEmits(["addCart"]);
-const props = defineProps<ProductCardType>();
+const product = defineProps<Product>();
 const router = useRouter();
 
 const handleInfo = () => {
-  router.push(`/products/${props.id}`);
+  router.push(`/products/${product.productId}`);
 };
 
 const addCart = () => {
-  emit("addCart", props);
+  emit("addCart", product);
 };
 </script>
