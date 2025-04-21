@@ -13,11 +13,11 @@ export interface ProductPageRequest {
   /**
    * 排序字段
    */
-  sortBy: string;
+  sortBy?: string;
   /**
    * 排序方向
    */
-  sortDirection: SortDirection;
+  sortDirection?: SortDirection;
 }
 
 /**

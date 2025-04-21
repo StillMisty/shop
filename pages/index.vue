@@ -1,7 +1,7 @@
 <template>
   <div
-    class="grid gap-4 p-16 max-w-7xl mx-auto grid-cols-[repeat(auto-fill,minmax(240px,1fr))] w-full"
     v-loading="loading"
+    class="grid gap-4 p-16 max-w-7xl mx-auto grid-cols-[repeat(auto-fill,minmax(240px,1fr))] w-full"
   >
     <ProductCard
       v-for="product in product2Show"
