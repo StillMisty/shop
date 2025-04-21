@@ -132,6 +132,8 @@ export function useCart() {
       const cartItems = cartQuery.data?.value;
       if (!cartItems) return;
       cartItems.forEach((item) => {
+        if (item.checked === value) return;
+        // 只在选中状态发生变化时才调用接口
         patchCartItemMutation.mutate({
           cartItemId: item.cartItemId,
           checked: value,
