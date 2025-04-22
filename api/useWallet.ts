@@ -17,16 +17,32 @@ export function useWallet() {
         body: walletRechargeRequest,
       },
     );
+    if (!response.success) {
+      throw new Error(response.message);
+    }
 
     return response;
   };
 
+  /**
+   * 充值钱包
+   * @param walletRechargeRequest 充值请求参数
+   */
   const walletRechargeMutation = useMutation({
     mutationFn: walletRecharge,
     onSuccess: (res) => {
-      if (res.success) {
-        queryClient.setQueryData(["meInfo"], res);
-      }
+      queryClient.setQueryData(["meInfo"], res);
+
+      ElMessage({
+        message: "充值成功",
+        type: "success",
+      });
+    },
+    onError: (error) => {
+      ElMessage({
+        message: error.message,
+        type: "error",
+      });
     },
   });
 

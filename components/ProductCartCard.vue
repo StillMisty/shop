@@ -14,11 +14,13 @@
           @click="handleClickImage"
         ></ProductImageDisplay>
       </div>
-
-      <ProductPriceDisplay
-        :price="props.product.productPrice"
-        :discount="props.product.productDiscount"
-      />
+      <div class="w-42">
+        <el-text truncated>{{ props.product.productName }}</el-text>
+        <ProductPriceDisplay
+          :price="props.product.productPrice"
+          :discount="props.product.productDiscount"
+        />
+      </div>
 
       <el-input-number
         :model-value="props.quantity"
