@@ -34,3 +34,42 @@ export const passwordRules = [
     trigger: "blur",
   },
 ];
+
+/**
+ * 地址address验证器
+ */
+export const addressRules = [
+  { required: true, message: "请输入地址", trigger: "blur" },
+  { min: 1, max: 50, message: "地址长度应该在6~50之间", trigger: "blur" },
+  {
+    pattern: /^[\u4e00-\u9fa5a-zA-Z0-9]+$/,
+    message: "地址只能包含字母、数字和中文",
+    trigger: "blur",
+  },
+];
+
+/**
+ * 手机号验证器
+ */
+export const phoneRules = [
+  { required: true, message: "请输入手机号", trigger: "blur" },
+  {
+    pattern:
+      /^(?:(?:\+|00)86)?(13[0-9]|14[01456789]|15[0-35-9]|17[0-35-8]|18[0-35-9]|19[0-35-9])\d{8}$/,
+    message: "请输入有效的手机号",
+    trigger: "blur",
+  },
+];
+
+/**
+ * 姓名验证器
+ */
+export const nameRules = [
+  { required: true, message: "请输入姓名", trigger: "blur" },
+  { min: 1, max: 50, message: "姓名长度应该在1~50之间", trigger: "blur" },
+  {
+    pattern: /^[\u4e00-\u9fa5a-zA-Z0-9]+$/,
+    message: "姓名只能包含字母、数字和中文",
+    trigger: "blur",
+  },
+];
