@@ -58,14 +58,6 @@ export function useProduct() {
   };
 
   /**
-   * 产品分页请求的响应类型
-   */
-  const productPageRequest = ref<ProductPageRequest>({
-    page: 0,
-    size: 10,
-  });
-
-  /**
    * 获取产品分页数据的查询
    * @param productPageRequest 分页请求参数
    * @returns {Product} 查询对象
@@ -73,7 +65,7 @@ export function useProduct() {
   const productPageQuery = useInfiniteQuery({
     queryKey: ["productPage"],
     queryFn: ({ pageParam = 0 }) =>
-      fetchProductPage({ page: pageParam, size: 10 }),
+      fetchProductPage({ page: pageParam, size: 12 }),
     getNextPageParam: (lastPage) => {
       if (lastPage.page.totalPages > lastPage.page.number + 1) {
         return lastPage.page.number + 1; // 返回下一页的页码
@@ -88,14 +80,23 @@ export function useProduct() {
    * 获取分类产品的函数
    * @param categoryId 分类ID
    */
-  const productByCategoryQuery = (categoryId: string) => {
-    return useQuery({
-      queryKey: ["productByCategory", categoryId, productPageRequest],
-      queryFn: () =>
-        fetchProductByCategory(categoryId, productPageRequest.value),
-      enabled: !!categoryId, // 只有当分类ID存在时才执行查询
+  const productByCategoryQuery = (categoryId: string) =>
+    useInfiniteQuery({
+      queryKey: ["productByCategory", categoryId],
+      queryFn: ({ pageParam = 0 }) =>
+        fetchProductByCategory(categoryId, {
+          page: pageParam,
+          size: 12,
+        }),
+      getNextPageParam: (lastPage) => {
+        if (lastPage.page.totalPages > lastPage.page.number + 1) {
+          return lastPage.page.number + 1; // 返回下一页的页码
+        } else {
+          return undefined; // 没有下一页
+        }
+      },
+      initialPageParam: 0,
     });
-  };
 
   /**
    * 获取单个产品的函数
@@ -111,7 +112,6 @@ export function useProduct() {
 
   return {
     // 分页查询相关
-    productPageRequest,
     productPageQuery,
 
     // 单个产品和分类产品查询

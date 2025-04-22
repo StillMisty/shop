@@ -10,7 +10,8 @@
         />
         <ProductImageDisplay
           :product-image="product.productImage"
-          class="w-48 h-48"
+          class="w-48 h-48 cursor-pointer"
+          @click="handleClickImage"
         ></ProductImageDisplay>
       </div>
 
@@ -43,4 +44,8 @@ const emit = defineEmits<{
   "update:checked": [value: boolean];
   remove: [id: string];
 }>();
+
+const handleClickImage = () => {
+  useRouter().push(`/products/${props.product.productId}`);
+};
 </script>
