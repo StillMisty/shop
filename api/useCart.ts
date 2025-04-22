@@ -1,11 +1,11 @@
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import type { CartItem } from "~/types/CartItem";
 import type { ApiResponse } from "~/types/DTO/ApiResponse";
 import type { CartItemChangeRequest } from "~/types/DTO/CartItemChangeRequest";
 
 export function useCart() {
   const apiUrl = useRuntimeConfig().public.apiUrl;
-
+  const queryClient = useQueryClient();
   const fetchCart = async () => {
     const data: ApiResponse<CartItem[]> = await $fetch(`${apiUrl}/api/cart`, {
       method: "GET",
@@ -83,7 +83,7 @@ export function useCart() {
   const cartItemQuantityMutation = useMutation({
     mutationFn: postCartItem,
     onSuccess: () => {
-      cartQuery.refetch();
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
     onError: (error) => {
       ElMessage.error(`添加商品到购物车失败: ${error.message || "未知错误"}`);
@@ -98,7 +98,7 @@ export function useCart() {
     mutationFn: (params: { cartItemId: string; checked: boolean }) =>
       patchCartItem(params.cartItemId, params.checked),
     onSuccess: () => {
-      cartQuery.refetch();
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
     onError: (error) => {
       ElMessage.error(
@@ -115,7 +115,7 @@ export function useCart() {
     mutationFn: deleteCartItemById,
     onSuccess: () => {
       ElMessage.success("删除购物车商品成功");
-      cartQuery.refetch();
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
     onError: (error) => {
       ElMessage.error(`删除购物车商品失败: ${error.message || "未知错误"}`);

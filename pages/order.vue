@@ -11,6 +11,11 @@
 </template>
 
 <script lang="ts" setup>
+// 需要登录才能访问
+definePageMeta({
+  requiresAuth: true,
+});
+
 const orderStore = useMyOrderStore();
 onMounted(() => {
   orderStore.fetchOrders();

@@ -37,7 +37,7 @@
       <el-empty description="购物车空空如也" />
     </div>
     <SettlementCard
-      class="min-w-48 h-40"
+      class="min-w-48 h-40 sticky top-18 self-start"
       :total-price="totalPrice"
       @settlement="handleSettlement"
     />
@@ -47,6 +47,11 @@
 <script lang="ts" setup>
 import { useCart } from "~/api/useCart";
 import type { CartItem } from "~/types/CartItem";
+
+// 需要登录才能访问
+definePageMeta({
+  requiresAuth: true,
+});
 
 const {
   cartQuery,

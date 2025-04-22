@@ -46,6 +46,7 @@ import { useAddress } from "~/api/useAddress";
 import { useMe } from "~/api/useMe";
 import type { AddressChangeRequest } from "~/types/DTO/AddressChangeRequest";
 
+// 需要登录才能访问
 definePageMeta({
   requiresAuth: true,
 });
