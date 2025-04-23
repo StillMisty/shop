@@ -45,7 +45,9 @@
 </template>
 
 <script lang="ts" setup>
+import { useAddress } from "~/api/useAddress";
 import { useCart } from "~/api/useCart";
+import { useOrder } from "~/api/useOrder";
 import type { CartItem } from "~/types/CartItem";
 
 // 需要登录才能访问
@@ -62,6 +64,10 @@ const {
   totalPrice,
 } = useCart();
 const { data: cartData, isPending, isError, error } = cartQuery;
+
+const { checkOrderMutation } = useOrder();
+
+const { addressQuery } = useAddress();
 
 const handleRemoveCartItem = async (cartItemId: string) => {
   await deleteCartItemMutation.mutateAsync(cartItemId);
@@ -80,33 +86,29 @@ const handleCheckedChange = (value: boolean, cartItem: CartItem) => {
   });
 };
 const handleSettlement = async () => {
-  // const data = 1;
-  // if (!data) {
-  //   ElMessage({
-  //     type: "warning",
-  //     message: "请选择商品",
-  //   });
-  //   return;
-  // }
-  // ElMessageBox.confirm(
-  //   `订单号：${data?.id}\n共: ￥${data?.orderTotal}`,
-  //   "结账",
-  //   {
-  //     confirmButtonText: "前去支付",
-  //     cancelButtonText: "暂不支付",
-  //     type: "success",
-  //     center: true,
-  //   },
-  // )
-  //   .then(() => {
-  //     const router = useRouter();
-  //     router.push(`/orders/${data?.id}`);
-  //   })
-  //   .catch(() => {
-  //     ElMessage({
-  //       type: "info",
-  //       message: "已取消支付",
-  //     });
-  //   });
+  if (!cartData.value || cartData.value.length === 0) return;
+  ElMessageBox.confirm(`合计 ${totalPrice.value}`, "是否确认结算？", {
+    type: "warning",
+    showCancelButton: true,
+    cancelButtonText: "取消",
+    confirmButtonText: "确定",
+  }).then(async () => {
+    // 检查是否有地址
+    if (!addressQuery.data || addressQuery.data.value?.length === 0) {
+      ElMessage.error("请先添加地址");
+      return;
+    }
+    let defaultAddressId = addressQuery.data.value?.find(
+      (address) => address.isDefault,
+    )?.addressId;
+    if (defaultAddressId === undefined) {
+      defaultAddressId = addressQuery.data.value?.[0].addressId;
+    }
+    if (defaultAddressId === undefined) {
+      ElMessage.error("找不到有效地址");
+      return;
+    }
+    await checkOrderMutation.mutateAsync({ addressId: defaultAddressId });
+  });
 };
 </script>

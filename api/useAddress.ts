@@ -1,11 +1,11 @@
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import type { Address } from "~/types/Address";
 import type { AddressChangeRequest } from "~/types/DTO/AddressChangeRequest";
 import type { ApiResponse } from "~/types/DTO/ApiResponse";
 
 export function useAddress() {
   const apiUrl = useRuntimeConfig().public.apiUrl;
-
+  const queryClient = useQueryClient();
   /**
    * 获取地址列表
    * @returns 地址列表
@@ -111,7 +111,12 @@ export function useAddress() {
         message: "地址添加成功",
         type: "success",
       });
-      addressQuery.refetch();
+    },
+    onSettled: () => {
+      // 地址添加后，重新获取地址列表
+      queryClient.invalidateQueries({
+        queryKey: ["address"],
+      });
     },
   });
 
@@ -125,7 +130,12 @@ export function useAddress() {
         message: "地址修改成功",
         type: "success",
       });
-      addressQuery.refetch();
+    },
+    onSettled: () => {
+      // 地址修改后，重新获取地址列表
+      queryClient.invalidateQueries({
+        queryKey: ["address"],
+      });
     },
   });
 
@@ -137,7 +147,12 @@ export function useAddress() {
         message: "地址设置成功",
         type: "success",
       });
-      addressQuery.refetch();
+    },
+    onSettled: () => {
+      // 地址设置后，重新获取地址列表
+      queryClient.invalidateQueries({
+        queryKey: ["address"],
+      });
     },
   });
 
@@ -148,7 +163,12 @@ export function useAddress() {
         message: "地址删除成功",
         type: "success",
       });
-      addressQuery.refetch();
+    },
+    onSettled: () => {
+      // 地址删除后，重新获取地址列表
+      queryClient.invalidateQueries({
+        queryKey: ["address"],
+      });
     },
   });
 

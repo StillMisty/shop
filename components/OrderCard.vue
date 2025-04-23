@@ -9,7 +9,7 @@
       <div class="flex gap-4 items-center">
         <OrderStatusTag :order-status="order.orderStatus" />
         <el-button
-          v-if="order.orderStatus === OrderStatus.PENDING_PAYMENT"
+          v-if="order.orderStatus === OrderStatus.PendingPayment"
           type="primary"
           @click="handlePayOrder"
           >支付订单</el-button
@@ -20,29 +20,24 @@
       {{ new Date(order.orderTime).toLocaleString() }}
     </el-descriptions-item>
     <el-descriptions-item label="订单号">
-      {{ order.id }}
+      {{ order.orderId }}
     </el-descriptions-item>
   </el-descriptions>
 </template>
 
 <script lang="ts" setup>
 import { useOrder } from "~/api/useOrder";
-import type { UpdateOrderStatusDto } from "~/types/DTO/OrderDtoType";
-import { OrderStatus, type OrderType } from "~/types/OrderType";
+import type { Order } from "~/types/Order";
+import { OrderStatus } from "~/types/OrderStatus";
 
 const { order } = defineProps<{
-  order: OrderType;
+  order: Order;
 }>();
 
-const updateOrderStatusDto = computed(
-  (): UpdateOrderStatusDto => ({
-    orderId: order.id,
-    newStatus: OrderStatus.PAID,
-  }),
-);
+const { payOrderMutation } = useOrder();
 
-const { orderUpdate } = useOrder();
-const handlePayOrder = () => {
-  orderUpdate.mutate(updateOrderStatusDto.value);
+const handlePayOrder = async () => {
+  const orderId = order.orderId;
+  await payOrderMutation.mutateAsync(orderId);
 };
 </script>

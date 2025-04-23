@@ -1,21 +1,24 @@
 <template>
   <div
-    class="flex items-center justify-center bg-gray-100 rounded-sm overflow-hidden"
+    class="flex items-center justify-center bg-gray-200 rounded-sm overflow-hidden"
   >
     <el-image
-      v-if="productImage"
-      :src="productImage"
-      class="w-full h-full"
+      :src="productImage ?? ''"
+      class="size-full"
       fit="cover"
       alt="商品图片"
     >
       <template #placeholder>
-        <div class="flex items-center justify-center w-full h-full">
+        <div class="flex items-center justify-center size-full">
           <LoaderCircle :size="64" class="animate-spin" />
         </div>
       </template>
+      <template #error>
+        <div class="flex items-center justify-center size-full text-black">
+          暂无图片
+        </div>
+      </template>
     </el-image>
-    <el-empty v-else :image-size="120" description="暂无图片"></el-empty>
   </div>
 </template>
 

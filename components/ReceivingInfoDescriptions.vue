@@ -40,9 +40,11 @@
 
 <script lang="ts" setup>
 import { User, Phone, MapPinHouse } from "lucide-vue-next";
-import type { ReceivingInfoType } from "~/types/ReceivingInfoType";
+import type { AddressChangeRequest } from "~/types/DTO/AddressChangeRequest";
 
-const { receivingInfo } = defineProps<{ receivingInfo: ReceivingInfoType }>();
+const { receivingInfo } = defineProps<{
+  receivingInfo: AddressChangeRequest;
+}>();
 
 const changeReceivingInfo = ref(Object.assign({}, receivingInfo));
 

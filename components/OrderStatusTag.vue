@@ -1,11 +1,11 @@
 <template>
   <el-tag :type="getTagType(orderStatus)">
-    {{ orderStatus }}
+    {{ getOrderStatusLabel(orderStatus) }}
   </el-tag>
 </template>
 
 <script lang="ts" setup>
-import { OrderStatus } from "~/types/OrderType";
+import { OrderStatus } from "~/types/OrderStatus";
 
 defineProps<{
   orderStatus: OrderStatus;
@@ -13,9 +13,9 @@ defineProps<{
 
 const getTagType = (orderStatus: OrderStatus) => {
   switch (orderStatus) {
-    case OrderStatus.PENDING_PAYMENT:
+    case OrderStatus.PendingPayment:
       return "warning";
-    case OrderStatus.PAID || OrderStatus.SHIPPED || OrderStatus.COMPLETED:
+    case OrderStatus.Paid || OrderStatus.Shipped || OrderStatus.Completed:
       return "success";
     default:
       return "info";

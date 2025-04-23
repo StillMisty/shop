@@ -82,11 +82,12 @@ export function useCart() {
    */
   const cartItemQuantityMutation = useMutation({
     mutationFn: postCartItem,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
-    },
     onError: (error) => {
       ElMessage.error(`添加商品到购物车失败: ${error.message || "未知错误"}`);
+    },
+    onSettled: () => {
+      // 重新获取购物车数据
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
 
@@ -97,8 +98,30 @@ export function useCart() {
   const patchCartItemMutation = useMutation({
     mutationFn: (params: { cartItemId: string; checked: boolean }) =>
       patchCartItem(params.cartItemId, params.checked),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    onMutate: (params) => {
+      // 乐观更新购物车数据
+      const cartItems = queryClient.getQueryData<CartItem[]>(["cart"]);
+      if (cartItems) {
+        const updatedCartItems = cartItems.map((item) => {
+          if (item.cartItemId === params.cartItemId) {
+            return { ...item, checked: params.checked };
+          }
+          return item;
+        });
+        queryClient.setQueryData(["cart"], updatedCartItems);
+      }
+    },
+    onSuccess: (data) => {
+      const cartItems = queryClient.getQueryData<CartItem[]>(["cart"]);
+      if (cartItems) {
+        const updatedCartItems = cartItems.map((item) => {
+          if (item.cartItemId === data.cartItemId) {
+            return { ...item, checked: data.checked };
+          }
+          return item;
+        });
+        queryClient.setQueryData(["cart"], updatedCartItems);
+      }
     },
     onError: (error) => {
       ElMessage.error(
@@ -106,7 +129,6 @@ export function useCart() {
       );
     },
   });
-
   /**
    * 根据CartItemId删除商品
    * @param cartItemId 商品 ID
@@ -115,13 +137,20 @@ export function useCart() {
     mutationFn: deleteCartItemById,
     onSuccess: () => {
       ElMessage.success("删除购物车商品成功");
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
     onError: (error) => {
       ElMessage.error(`删除购物车商品失败: ${error.message || "未知错误"}`);
     },
+    onSettled: () => {
+      // 重新获取购物车数据
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
   });
 
+  /**
+   * 购物车全选状态计算属性
+   * @returns {boolean} 是否全选
+   */
   const isCheckAll = computed({
     get: () => {
       const cartItems = cartQuery.data?.value;
