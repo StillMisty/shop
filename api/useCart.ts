@@ -82,12 +82,35 @@ export function useCart() {
    */
   const cartItemQuantityMutation = useMutation({
     mutationFn: postCartItem,
+    onMutate: (params) => {
+      // 乐观更新购物车数据
+      const cartItems = queryClient.getQueryData<CartItem[]>(["cart"]);
+      if (cartItems) {
+        const updatedCartItems = cartItems.map((item) => {
+          if (item.product.productId === params.productId) {
+            return { ...item, quantity: params.quantity };
+          }
+          return item;
+        });
+        queryClient.setQueryData(["cart"], updatedCartItems);
+      }
+    },
+    onSuccess: (data) => {
+      // 更新购物车数据
+      const cartItems = queryClient.getQueryData<CartItem[]>(["cart"]);
+      if (cartItems) {
+        const updatedCartItems = cartItems.map((item) => {
+          if (item.product.productId === data.product.productId) {
+            return { ...item, quantity: data.quantity };
+          }
+          return item;
+        });
+        queryClient.setQueryData(["cart"], updatedCartItems);
+      }
+    },
+
     onError: (error) => {
       ElMessage.error(`添加商品到购物车失败: ${error.message || "未知错误"}`);
-    },
-    onSettled: () => {
-      // 重新获取购物车数据
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
 
@@ -111,17 +134,24 @@ export function useCart() {
         queryClient.setQueryData(["cart"], updatedCartItems);
       }
     },
+    onSuccess: (data) => {
+      const cartItems = queryClient.getQueryData<CartItem[]>(["cart"]);
+      if (cartItems) {
+        const updatedCartItems = cartItems.map((item) => {
+          if (item.cartItemId === data.cartItemId) {
+            return { ...item, checked: data.checked };
+          }
+          return item;
+        });
+        queryClient.setQueryData(["cart"], updatedCartItems);
+      }
+    },
     onError: (error) => {
       ElMessage.error(
         `修改购物车商品选中状态失败: ${error.message || "未知错误"}`,
       );
     },
-    onSettled: () => {
-      // 重新获取购物车数据
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
-    },
   });
-
   /**
    * 根据CartItemId删除商品
    * @param cartItemId 商品 ID
