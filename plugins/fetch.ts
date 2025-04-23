@@ -1,6 +1,6 @@
 import { defineNuxtPlugin, useRuntimeConfig } from "#app";
 
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(() => {
   const apiUrl = useRuntimeConfig().public.apiUrl;
 
   // 重新定义全局拦截器

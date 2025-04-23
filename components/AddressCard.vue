@@ -18,8 +18,6 @@
         v-for="address in addressList"
         :key="address.addressId"
         shadow="hover"
-        :class="{ 'border-emerald-500 border': address.isDefault }"
-        class="transition-all hover:shadow-lg"
       >
         <div class="flex justify-between items-start mb-2">
           <div class="flex gap-2 items-center">
