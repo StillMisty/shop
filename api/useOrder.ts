@@ -47,13 +47,18 @@ export function useOrder() {
    */
   const checkOrderMutation = useMutation({
     mutationFn: checkOrder,
-    onSuccess: () => {
-      // 订单创建成功后，进行缓存更新或其他操作
-      queryClient.invalidateQueries({ queryKey: ["orders"] });
-    },
     onError: (error) => {
       // 处理错误情况
       console.error("创建订单失败:", error);
+    },
+    onSettled: () => {
+      // 订单创建后，重新获取订单列表
+      queryClient.invalidateQueries({
+        queryKey: ["orders"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["cart"],
+      });
     },
   });
 
