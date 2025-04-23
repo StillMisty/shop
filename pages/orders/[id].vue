@@ -3,11 +3,11 @@
     <div v-if="isLoading" class="flex items-center justify-center h-full">
       <LoaderCircle class="animate-spin" :size="48" />
     </div>
-    <div v-else v-if="order" class="flex flex-col items-center p-16 gap-8">
+    <div v-else-if="order" class="flex flex-col items-center p-16 gap-8">
       <el-card class="w-full max-w-2xl">
-        <OrderStatusSteps :orderStatus="order.orderStatus" />
+        <OrderStatusSteps :order-status="order.orderStatus" />
       </el-card>
-      <ReceivingInfoDescriptions :receivingInfo="order.receivingInfo">
+      <ReceivingInfoDescriptions :receiving-info="order">
       </ReceivingInfoDescriptions>
       <OrderCard :order="order"></OrderCard>
     </div>
@@ -17,11 +17,10 @@
 <script lang="ts" setup>
 import { LoaderCircle } from "lucide-vue-next";
 import { useOrder } from "~/api/useOrder";
-import { OrderStatus } from "~/types/OrderType";
 
 const route = useRoute();
 const orderId = route.params.id as string;
 
-const { orderQuery } = useOrder();
-const { data: order, isLoading } = await orderQuery(orderId);
+const { orderByIdQuery } = useOrder();
+const { isLoading, data: order } = orderByIdQuery(orderId);
 </script>

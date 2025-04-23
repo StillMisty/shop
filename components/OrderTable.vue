@@ -1,7 +1,7 @@
 <template>
   <el-table :data="orders" border>
     <el-table-column prop="orderItems" label="订单">
-      <template #default="{ row }">
+      <template #default="{ row }: { row: Order }">
         <div
           class="flex items-center gap-3 overflow-x-auto"
           @wheel.stop="handleWheel"
@@ -11,34 +11,30 @@
             :key="item.id"
             class="flex flex-col items-center max-w-24"
           >
-            <el-image
-              :src="item.product.image"
+            <ProductImageDisplay
+              :product-image="item.product.productImage"
               class="size-24 cursor-pointer"
-              fit="cover"
-              @click.stop="handleClickProduct(item.product.id)"
+              @click.stop="handleClickProduct(item.product.productId)"
             />
-            <el-text type="info" truncated>{{ item.product.name }}</el-text>
+            <el-text type="info" truncated>{{
+              item.product.productName
+            }}</el-text>
             <el-text type="info" size="small">{{ item.quantity }}件</el-text>
           </div>
         </div>
       </template>
     </el-table-column>
-    <el-table-column prop="orderTotal" label="总价" width="100">
-      <template #default="{ row }">
-        <PriceDisplay :price="row.orderTotal" />
+    <el-table-column prop="totalAmount" label="总价" width="100">
+      <template #default="{ row }: { row: Order }">
+        <PriceDisplay :price="row.totalAmount" />
       </template>
     </el-table-column>
-    <el-table-column label="订单号">
-      <el-table-column label="创建时间" width="160">
-        <template #default="{ row }">
-          <div class="flex flex-col">
-            <el-text type="info">{{ row.id }}</el-text>
-            <el-text type="info" size="small">{{
-              new Date(row.orderTime).toLocaleString()
-            }}</el-text>
-          </div>
-        </template>
-      </el-table-column>
+    <el-table-column label="创建时间" width="160">
+      <template #default="{ row }: { row: Order }">
+        <el-text type="info" size="small">{{
+          new Date(row.orderTime).toLocaleString()
+        }}</el-text>
+      </template>
     </el-table-column>
     <el-table-column
       prop="orderStatus"
@@ -47,13 +43,13 @@
       :filters="orderStatusFilters"
       :filter-method="orderStatusFilterMethod"
     >
-      <template #default="{ row }">
+      <template #default="{ row }: { row: Order }">
         <div class="flex justify-between items-center">
           <OrderStatusTag :order-status="row.orderStatus" />
           <el-button
             type="primary"
             size="small"
-            @click.stop="handlePay(row.id)"
+            @click.stop="handlePay(row.orderId)"
           >
             订单详情
           </el-button>
@@ -64,22 +60,23 @@
 </template>
 
 <script lang="ts" setup>
-import PriceDisplay from "./PriceDisplay.vue";
 import gsap from "gsap";
-import { OrderStatus } from "~/types/OrderType";
+import type { Order } from "~/types/Order";
+import { OrderStatus } from "~/types/OrderStatus";
 
-const orderStore = useMyOrderStore();
-const { orders } = storeToRefs(orderStore);
+defineProps<{
+  orders: Order[];
+}>();
 
 const orderStatusFilters = [
-  { text: "待支付", value: OrderStatus.PENDING_PAYMENT },
-  { text: "已支付", value: OrderStatus.PAID },
-  { text: "处理中", value: OrderStatus.PROCESSING },
-  { text: "已发货", value: OrderStatus.SHIPPED },
-  { text: "已完成", value: OrderStatus.COMPLETED },
-  { text: "已取消", value: OrderStatus.CANCELLED },
-  { text: "退款中", value: OrderStatus.REFUNDING },
-  { text: "已退款", value: OrderStatus.REFUNDED },
+  { text: "待支付", value: OrderStatus.PendingPayment },
+  { text: "已支付", value: OrderStatus.Paid },
+  { text: "处理中", value: OrderStatus.Processing },
+  { text: "已发货", value: OrderStatus.Shipped },
+  { text: "已完成", value: OrderStatus.Completed },
+  { text: "已取消", value: OrderStatus.Cancelled },
+  { text: "退款中", value: OrderStatus.Refunding },
+  { text: "已退款", value: OrderStatus.Refunded },
 ];
 
 const orderStatusFilterMethod = (value: string, row: any) =>
