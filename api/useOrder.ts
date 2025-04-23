@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/vue-query";
+import type { AddressChangeRequest } from "~/types/DTO/AddressChangeRequest";
 import type { ApiResponse } from "~/types/DTO/ApiResponse";
 import type { CheckoutRequest } from "~/types/DTO/CheckoutRequest";
 import type { Order } from "~/types/Order";
@@ -59,6 +60,23 @@ export function useOrder() {
     return res.data;
   };
 
+  const updateOrderAddress = async (
+    orderId: string,
+    addressChangeRequest: AddressChangeRequest,
+  ) => {
+    const res = await $fetch<ApiResponse<Order>>(
+      `${apiUrl}/api/orders/${orderId}/address`,
+      {
+        method: "PATCH",
+        body: addressChangeRequest,
+      },
+    );
+    if (!res.success) {
+      throw new Error(res.message);
+    }
+    return res.data;
+  };
+
   const orderQuery = useQuery({
     queryKey: ["orders"],
     queryFn: fetchOrders,
@@ -111,10 +129,33 @@ export function useOrder() {
     },
   });
 
+  /**
+   * 更新订单地址
+   * @param orderId 订单 ID
+   * @param addressChangeRequest 地址变更请求
+   */
+  const updateOrderAddressMutation = useMutation({
+    mutationFn: (params: {
+      orderId: string;
+      addressChangeRequest: AddressChangeRequest;
+    }) => updateOrderAddress(params.orderId, params.addressChangeRequest),
+    onError: (error) => {
+      // 处理错误情况
+      console.error("更新订单地址失败:", error);
+    },
+    onSettled: () => {
+      // 地址更新后，重新获取订单列表
+      queryClient.invalidateQueries({
+        queryKey: ["orders"],
+      });
+    },
+  });
+
   return {
     orderQuery,
     checkOrderMutation,
     orderByIdQuery,
     payOrderMutation,
+    updateOrderAddressMutation,
   };
 }

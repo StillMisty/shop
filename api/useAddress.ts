@@ -23,6 +23,23 @@ export function useAddress() {
   };
 
   /**
+   * 获取地址详情
+   * @param addressId 地址 ID
+   * @returns 地址详情
+   */
+  const fetchAddressById = async (addressId: number) => {
+    const data: ApiResponse<Address> = await $fetch(
+      `${apiUrl}/api/address/${addressId}`,
+    );
+    if (!data.success) {
+      // 处理错误情况
+      console.error("获取数据失败:", data.message);
+      throw new Error(data.message);
+    }
+    return data.data;
+  };
+
+  /**
    * 添加地址
    * @param address 地址
    * @returns 新增的地址
@@ -104,6 +121,13 @@ export function useAddress() {
     queryFn: fetchAddress,
   });
 
+  const addressDetailQuery = (addressId: number) => {
+    return useQuery({
+      queryKey: ["address", addressId],
+      queryFn: () => fetchAddressById(addressId),
+    });
+  };
+
   const postAddressMutation = useMutation({
     mutationFn: postAddress,
     onSuccess: () => {
@@ -174,6 +198,7 @@ export function useAddress() {
 
   return {
     addressQuery,
+    addressDetailQuery,
     postAddressMutation,
     patchAddressMutation,
     deleteAddressMutation,

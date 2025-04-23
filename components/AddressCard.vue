@@ -86,7 +86,6 @@
 </template>
 
 <script lang="ts" setup>
-// import { vAutoAnimate } from "@formkit/auto-animate";
 import { Plus, Edit, Delete, MapPinOff } from "lucide-vue-next";
 import type { Address } from "~/types/Address";
 import type { AddressChangeRequest } from "~/types/DTO/AddressChangeRequest";
