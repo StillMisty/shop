@@ -12,7 +12,7 @@
         :order-id="orderId"
         @update-order-address="handleUpdateOrderAddress"
       />
-      <OrderCard :order="order"></OrderCard>
+      <OrderInfoCard :order="order"></OrderInfoCard>
     </div>
   </div>
 </template>

@@ -3,7 +3,6 @@ import type { AddressChangeRequest } from "~/types/DTO/AddressChangeRequest";
 import type { ApiResponse } from "~/types/DTO/ApiResponse";
 import type { CheckoutRequest } from "~/types/DTO/CheckoutRequest";
 import type { Order } from "~/types/Order";
-import type { OrderItem } from "~/types/OrderItem";
 
 export function useOrder() {
   const queryClient = useQueryClient();
@@ -34,7 +33,7 @@ export function useOrder() {
   };
 
   const checkOrder = async (checkoutRequest: CheckoutRequest) => {
-    const res = await $fetch<ApiResponse<OrderItem>>(
+    const res = await $fetch<ApiResponse<Order>>(
       `${apiUrl}/api/orders/checkout`,
       {
         method: "POST",
@@ -69,6 +68,45 @@ export function useOrder() {
       {
         method: "PATCH",
         body: addressChangeRequest,
+      },
+    );
+    if (!res.success) {
+      throw new Error(res.message);
+    }
+    return res.data;
+  };
+
+  const cancelOrder = async (orderId: string) => {
+    const res = await $fetch<ApiResponse<Order>>(
+      `${apiUrl}/api/orders/${orderId}/status/cancelled`,
+      {
+        method: "PATCH",
+      },
+    );
+    if (!res.success) {
+      throw new Error(res.message);
+    }
+    return res.data;
+  };
+
+  const refundOrder = async (orderId: string) => {
+    const res = await $fetch<ApiResponse<Order>>(
+      `${apiUrl}/api/orders/${orderId}/status/refunding`,
+      {
+        method: "PATCH",
+      },
+    );
+    if (!res.success) {
+      throw new Error(res.message);
+    }
+    return res.data;
+  };
+
+  const completeOrder = async (orderId: string) => {
+    const res = await $fetch<ApiResponse<Order>>(
+      `${apiUrl}/api/orders/${orderId}/status/completed`,
+      {
+        method: "PATCH",
       },
     );
     if (!res.success) {
@@ -156,11 +194,77 @@ export function useOrder() {
     },
   });
 
+  /**
+   * 取消订单
+   * @param orderId 订单 ID
+   */
+  const cancelOrderMutation = useMutation({
+    mutationFn: cancelOrder,
+    onSuccess: () => {
+      ElMessage.success("取消订单成功");
+    },
+    onError: (error) => {
+      // 处理错误情况
+      console.error("取消订单失败:", error);
+    },
+    onSettled: () => {
+      // 取消订单后，重新获取订单列表
+      queryClient.invalidateQueries({
+        queryKey: ["orders"],
+      });
+    },
+  });
+
+  /**
+   * 退款订单
+   * @param orderId 订单 ID
+   */
+  const refundOrderMutation = useMutation({
+    mutationFn: refundOrder,
+    onSuccess: () => {
+      ElMessage.success("退款订单成功");
+    },
+    onError: (error) => {
+      // 处理错误情况
+      console.error("退款订单失败:", error);
+    },
+    onSettled: () => {
+      // 退款订单后，重新获取订单列表
+      queryClient.invalidateQueries({
+        queryKey: ["orders"],
+      });
+    },
+  });
+
+  /**
+   * 完成订单
+   * @param orderId 订单 ID
+   */
+  const completeOrderMutation = useMutation({
+    mutationFn: completeOrder,
+    onSuccess: () => {
+      ElMessage.success("完成订单成功");
+    },
+    onError: (error) => {
+      // 处理错误情况
+      console.error("完成订单失败:", error);
+    },
+    onSettled: () => {
+      // 完成订单后，重新获取订单列表
+      queryClient.invalidateQueries({
+        queryKey: ["orders"],
+      });
+    },
+  });
+
   return {
     orderQuery,
     checkOrderMutation,
     orderByIdQuery,
     payOrderMutation,
     updateOrderAddressMutation,
+    cancelOrderMutation,
+    refundOrderMutation,
+    completeOrderMutation,
   };
 }

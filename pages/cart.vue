@@ -108,7 +108,10 @@ const handleSettlement = async () => {
       ElMessage.error("找不到有效地址");
       return;
     }
-    await checkOrderMutation.mutateAsync({ addressId: defaultAddressId });
+    const order = await checkOrderMutation.mutateAsync({
+      addressId: defaultAddressId,
+    });
+    useRouter().push(`/orders/${order.orderId}`);
   });
 };
 </script>
