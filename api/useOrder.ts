@@ -117,9 +117,11 @@ export function useOrder() {
    */
   const payOrderMutation = useMutation({
     mutationFn: payOrder,
-    onError: (error) => {
-      // 处理错误情况
-      console.error("支付订单失败:", error);
+    onSuccess: () => {
+      ElMessage.success("支付订单成功");
+    },
+    onError: () => {
+      ElMessage.error("支付订单失败，请稍后重试");
     },
     onSettled: () => {
       // 支付后，重新获取订单列表
@@ -139,6 +141,9 @@ export function useOrder() {
       orderId: string;
       addressChangeRequest: AddressChangeRequest;
     }) => updateOrderAddress(params.orderId, params.addressChangeRequest),
+    onSuccess: () => {
+      ElMessage.success("更新订单地址成功");
+    },
     onError: (error) => {
       // 处理错误情况
       console.error("更新订单地址失败:", error);

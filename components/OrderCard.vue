@@ -37,7 +37,14 @@ const { order } = defineProps<{
 const { payOrderMutation } = useOrder();
 
 const handlePayOrder = async () => {
-  const orderId = order.orderId;
-  await payOrderMutation.mutateAsync(orderId);
+  ElMessageBox.confirm("是否确认支付订单？", "支付订单", {
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonText: "支付",
+    cancelButtonText: "取消",
+  }).then(async () => {
+    const orderId = order.orderId;
+    await payOrderMutation.mutateAsync(orderId);
+  });
 };
 </script>

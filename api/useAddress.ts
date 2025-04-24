@@ -121,10 +121,11 @@ export function useAddress() {
     queryFn: fetchAddress,
   });
 
-  const addressDetailQuery = (addressId: number) => {
+  const addressDetailQuery = (addressId: number | null) => {
     return useQuery({
       queryKey: ["address", addressId],
-      queryFn: () => fetchAddressById(addressId),
+      queryFn: () => fetchAddressById(addressId!),
+      enabled: !!addressId, // 只有在 addressId 存在时才会执行查询
     });
   };
 
@@ -196,6 +197,10 @@ export function useAddress() {
     },
   });
 
+  const isExistAddress = computed(() => {
+    return (addressQuery.data?.value?.length ?? 0) > 0;
+  });
+
   return {
     addressQuery,
     addressDetailQuery,
@@ -203,5 +208,6 @@ export function useAddress() {
     patchAddressMutation,
     deleteAddressMutation,
     updateDefaultAddressMutation,
+    isExistAddress,
   };
 }

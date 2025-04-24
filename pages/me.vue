@@ -29,13 +29,13 @@
       </div>
       <AddressCard
         v-if="addressData"
-        :address-list="addressData"
+        :is-exit-address="!!isExistAddress"
         class="mb-6"
-        @add-address="handleAddAddress"
-        @update-address="handleUpdateAddress"
-        @delete-address="handleDeleteAddress"
-        @update-default-address="handleUpdateDefaultAddress"
-      />
+        ><AddressItemCard
+          v-for="address in addressData"
+          :key="address.addressId"
+          :address="address"
+      /></AddressCard>
     </div>
   </div>
 </template>
@@ -44,7 +44,6 @@
 import { LoaderCircle, TriangleAlert, RefreshCw } from "lucide-vue-next";
 import { useAddress } from "~/api/useAddress";
 import { useMe } from "~/api/useMe";
-import type { AddressChangeRequest } from "~/types/DTO/AddressChangeRequest";
 
 // 需要登录才能访问
 definePageMeta({
@@ -52,44 +51,10 @@ definePageMeta({
 });
 
 const { meInfoQuery } = useMe();
-const {
-  addressQuery,
-  postAddressMutation,
-  patchAddressMutation,
-  deleteAddressMutation,
-  updateDefaultAddressMutation,
-} = useAddress();
+const { addressQuery, isExistAddress } = useAddress();
 
 const { isPending, isError, data: meInfo, error } = meInfoQuery;
 const { isPending: addressIsPending, data: addressData } = addressQuery;
-
-const handleAddAddress = async (addressForm: AddressChangeRequest) => {
-  await postAddressMutation.mutateAsync(addressForm);
-};
-
-const handleUpdateAddress = async (
-  addressId: number,
-  addressForm: AddressChangeRequest,
-) => {
-  await patchAddressMutation.mutateAsync({
-    addressId,
-    addressChangeRequest: addressForm,
-  });
-};
-
-const handleDeleteAddress = async (addressId: number) => {
-  await deleteAddressMutation.mutateAsync(addressId);
-};
-
-const handleUpdateDefaultAddress = async (
-  addressId: number,
-  isDefault: boolean,
-) => {
-  await updateDefaultAddressMutation.mutateAsync({
-    addressId,
-    isDefault,
-  });
-};
 
 const handleRefresh = () => {
   meInfoQuery.refetch();

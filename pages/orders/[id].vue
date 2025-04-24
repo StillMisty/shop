@@ -9,6 +9,7 @@
       </el-card>
       <ReceivingInfoDescriptions
         :receiving-info="order"
+        :order-id="orderId"
         @update-order-address="handleUpdateOrderAddress"
       />
       <OrderCard :order="order"></OrderCard>

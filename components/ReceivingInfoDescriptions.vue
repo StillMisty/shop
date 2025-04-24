@@ -20,12 +20,21 @@
           v-if="addressList"
           class="max-w-4xl mx-auto"
           :is-drawer-visible="isDrawerVisible"
-          :address-list="addressList"
-          @add-address="handleAddAddress"
-          @update-address="handleUpdateAddress"
-          @delete-address="handleDeleteAddress"
-          @update-default-address="handleUpdateDefaultAddress"
-      /></el-drawer>
+          :is-exit-address="isExistAddress"
+          ><AddressItemCard
+            v-for="address in addressList"
+            :key="address.addressId"
+            :address="address"
+            ><el-button
+              type="primary"
+              text
+              size="small"
+              @click.stop="handleClickAddressItemCard(address)"
+              ><MousePointer2 />选择</el-button
+            >
+          </AddressItemCard>
+        </AddressCard>
+      </el-drawer>
     </template>
     <el-descriptions-item label-width="120">
       <template #label>
@@ -49,61 +58,33 @@
 </template>
 
 <script lang="ts" setup>
-import { User, Phone, MapPinHouse } from "lucide-vue-next";
+import { User, Phone, MapPinHouse, MousePointer2 } from "lucide-vue-next";
 import { useAddress } from "~/api/useAddress";
+import { useOrder } from "~/api/useOrder";
+import type { Address } from "~/types/Address";
 import type { AddressChangeRequest } from "~/types/DTO/AddressChangeRequest";
 
-const { receivingInfo } = defineProps<{
+const { receivingInfo, orderId } = defineProps<{
   receivingInfo: AddressChangeRequest;
-}>();
-
-const emit = defineEmits<{
-  updateOrderAddress: [address: AddressChangeRequest];
+  orderId: string;
 }>();
 
 const isDrawerVisible = ref(false);
 
-const {
-  addressQuery,
-  addressDetailQuery,
-  postAddressMutation,
-  patchAddressMutation,
-  updateDefaultAddressMutation,
-  deleteAddressMutation,
-} = useAddress();
-
+const { addressQuery, isExistAddress } = useAddress();
 const { data: addressList } = addressQuery;
 
-const handleAddAddress = async (addressForm: AddressChangeRequest) => {
-  await postAddressMutation.mutateAsync(addressForm);
-};
+const { updateOrderAddressMutation } = useOrder();
 
-const handleUpdateAddress = async (
-  addressId: number,
-  addressForm: AddressChangeRequest,
-) => {
-  await patchAddressMutation.mutateAsync({
-    addressId,
-    addressChangeRequest: addressForm,
+const handleClickAddressItemCard = async (address: Address) => {
+  await updateOrderAddressMutation.mutateAsync({
+    orderId,
+    addressChangeRequest: {
+      name: address.name,
+      phone: address.phone,
+      address: address.address,
+    },
   });
-};
-
-const handleDeleteAddress = async (addressId: number) => {
-  await deleteAddressMutation.mutateAsync(addressId);
-};
-
-const handleUpdateDefaultAddress = async (addressId: number) => {
-  // 先更新默认地址
-  await updateDefaultAddressMutation.mutateAsync({
-    addressId,
-    isDefault: true,
-  });
-  // 然后获取地址详情
-  // TODO
-  const { data } = addressDetailQuery(addressId);
-  if (data && data.value) {
-    emit("updateOrderAddress", data.value as AddressChangeRequest);
-    console.log("更新地址成功", data.value);
-  }
+  isDrawerVisible.value = false;
 };
 </script>
