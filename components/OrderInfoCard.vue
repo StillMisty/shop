@@ -36,7 +36,7 @@
         >
       </div>
     </template>
-    <el-descriptions-item label="订单号" span="4">
+    <el-descriptions-item label="订单号" :span="3">
       {{ order.orderId }}
     </el-descriptions-item>
     <el-descriptions-item label="下单时间">

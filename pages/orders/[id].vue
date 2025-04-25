@@ -13,6 +13,15 @@
         @update-order-address="handleUpdateOrderAddress"
       />
       <OrderInfoCard :order="order"></OrderInfoCard>
+      <div class="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <OrderProductItemCard
+          v-for="orderItem in order.orderItems"
+          :key="orderItem.id"
+          :order-item="orderItem"
+          class="cursor-pointer"
+          @click="handleClickProductItem(orderItem.product.productId)"
+        ></OrderProductItemCard>
+      </div>
     </div>
   </div>
 </template>
@@ -35,5 +44,9 @@ const handleUpdateOrderAddress = async (
     orderId,
     addressChangeRequest,
   });
+};
+
+const handleClickProductItem = (productId: string) => {
+  useRouter().push(`/products/${productId}`);
 };
 </script>
