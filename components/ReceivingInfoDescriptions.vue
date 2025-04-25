@@ -7,63 +7,84 @@
     class="w-full max-w-3xl"
   >
     <template #extra>
-      <el-button type="primary" @click="handleUpdateReceivingInfo"
-        >确认修改</el-button
+      <el-button type="primary" @click="isDrawerVisible = true"
+        >修改地址</el-button
       >
+      <el-drawer
+        v-model="isDrawerVisible"
+        size="80%"
+        direction="btt"
+        title="修改地址"
+      >
+        <AddressCard
+          v-if="addressList"
+          class="max-w-4xl mx-auto"
+          :is-drawer-visible="isDrawerVisible"
+          :is-exit-address="isExistAddress"
+          ><AddressItemCard
+            v-for="address in addressList"
+            :key="address.addressId"
+            :address="address"
+            ><el-button
+              type="primary"
+              text
+              size="small"
+              @click.stop="handleClickAddressItemCard(address)"
+              ><MousePointer2 />选择</el-button
+            >
+          </AddressItemCard>
+        </AddressCard>
+      </el-drawer>
     </template>
-    <el-descriptions-item>
+    <el-descriptions-item label-width="120">
       <template #label>
         <div class="flex items-center gap-4"><User />收件人</div>
       </template>
-      <el-input v-model="changeReceivingInfo.name" placeholder="请输入收件人" />
+      {{ receivingInfo.name }}
     </el-descriptions-item>
-    <el-descriptions-item
-      ><template #label>
+    <el-descriptions-item label-width="120">
+      <template #label>
         <div class="flex items-center gap-4"><Phone />电话</div>
       </template>
-      <el-input v-model="changeReceivingInfo.phone" placeholder="请输入电话" />
+      {{ receivingInfo.phone }}
     </el-descriptions-item>
-    <el-descriptions-item
-      ><template #label>
+    <el-descriptions-item>
+      <template #label>
         <div class="flex items-center gap-4"><MapPinHouse />地址</div>
       </template>
-      <el-input
-        v-model="changeReceivingInfo.address"
-        type="textarea"
-        :rows="2"
-        resize="none"
-        placeholder="请输入地址"
-      />
+      {{ receivingInfo.address }}
     </el-descriptions-item>
   </el-descriptions>
 </template>
 
 <script lang="ts" setup>
-import { User, Phone, MapPinHouse } from "lucide-vue-next";
+import { User, Phone, MapPinHouse, MousePointer2 } from "lucide-vue-next";
+import { useAddress } from "~/api/useAddress";
+import { useOrder } from "~/api/useOrder";
+import type { Address } from "~/types/Address";
 import type { AddressChangeRequest } from "~/types/DTO/AddressChangeRequest";
 
-const { receivingInfo } = defineProps<{
+const { receivingInfo, orderId } = defineProps<{
   receivingInfo: AddressChangeRequest;
+  orderId: string;
 }>();
 
-const changeReceivingInfo = ref(Object.assign({}, receivingInfo));
+const isDrawerVisible = ref(false);
 
-const handleUpdateReceivingInfo = () => {
-  if (changeReceivingInfo.value.name === "") {
-    ElMessage.error("请输入收件人");
-    return;
-  }
-  if (changeReceivingInfo.value.phone === "") {
-    ElMessage.error("请输入电话");
-    return;
-  }
-  if (changeReceivingInfo.value.address === "") {
-    ElMessage.error("请输入地址");
-    return;
-  }
+const { addressQuery, isExistAddress } = useAddress();
+const { data: addressList } = addressQuery;
 
-  // TODO 调用API更新收货地址
+const { updateOrderAddressMutation } = useOrder();
 
-  ElMessage.success("修改成功");
+const handleClickAddressItemCard = async (address: Address) => {
+  await updateOrderAddressMutation.mutateAsync({
+    orderId,
+    addressChangeRequest: {
+      name: address.name,
+      phone: address.phone,
+      address: address.address,
+    },
+  });
+  isDrawerVisible.value = false;
 };
 </script>

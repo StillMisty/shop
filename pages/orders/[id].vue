@@ -7,9 +7,21 @@
       <el-card class="w-full max-w-2xl">
         <OrderStatusSteps :order-status="order.orderStatus" />
       </el-card>
-      <ReceivingInfoDescriptions :receiving-info="order">
-      </ReceivingInfoDescriptions>
-      <OrderCard :order="order"></OrderCard>
+      <ReceivingInfoDescriptions
+        :receiving-info="order"
+        :order-id="orderId"
+        @update-order-address="handleUpdateOrderAddress"
+      />
+      <OrderInfoCard :order="order"></OrderInfoCard>
+      <div class="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <OrderProductItemCard
+          v-for="orderItem in order.orderItems"
+          :key="orderItem.id"
+          :order-item="orderItem"
+          class="cursor-pointer"
+          @click="handleClickProductItem(orderItem.product.productId)"
+        ></OrderProductItemCard>
+      </div>
     </div>
   </div>
 </template>
@@ -17,10 +29,24 @@
 <script lang="ts" setup>
 import { LoaderCircle } from "lucide-vue-next";
 import { useOrder } from "~/api/useOrder";
+import type { AddressChangeRequest } from "~/types/DTO/AddressChangeRequest";
 
 const route = useRoute();
 const orderId = route.params.id as string;
 
-const { orderByIdQuery } = useOrder();
+const { orderByIdQuery, updateOrderAddressMutation } = useOrder();
 const { isLoading, data: order } = orderByIdQuery(orderId);
+
+const handleUpdateOrderAddress = async (
+  addressChangeRequest: AddressChangeRequest,
+) => {
+  await updateOrderAddressMutation.mutateAsync({
+    orderId,
+    addressChangeRequest,
+  });
+};
+
+const handleClickProductItem = (productId: string) => {
+  useRouter().push(`/products/${productId}`);
+};
 </script>
