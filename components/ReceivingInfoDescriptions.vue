@@ -7,7 +7,10 @@
     class="w-full max-w-3xl"
   >
     <template #extra>
-      <el-button type="primary" @click="isDrawerVisible = true"
+      <el-button
+        v-if="handleIsAllowUpdateAddress()"
+        type="primary"
+        @click="isDrawerVisible = true"
         >修改地址</el-button
       >
       <el-drawer
@@ -63,10 +66,12 @@ import { useAddress } from "~/api/useAddress";
 import { useOrder } from "~/api/useOrder";
 import type { Address } from "~/types/Address";
 import type { AddressChangeRequest } from "~/types/DTO/AddressChangeRequest";
+import type { OrderStatus } from "~/types/OrderStatus";
 
-const { receivingInfo, orderId } = defineProps<{
+const { receivingInfo, orderId, orderStatus } = defineProps<{
   receivingInfo: AddressChangeRequest;
   orderId: string;
+  orderStatus: OrderStatus;
 }>();
 
 const isDrawerVisible = ref(false);
@@ -86,5 +91,9 @@ const handleClickAddressItemCard = async (address: Address) => {
     },
   });
   isDrawerVisible.value = false;
+};
+
+const handleIsAllowUpdateAddress = () => {
+  return isAllowUpdateAddress(orderStatus);
 };
 </script>
