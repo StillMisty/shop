@@ -10,6 +10,7 @@
       <ReceivingInfoDescriptions
         :receiving-info="order"
         :order-id="orderId"
+        :order-status="order.orderStatus"
         @update-order-address="handleUpdateOrderAddress"
       />
       <OrderInfoCard :order="order"></OrderInfoCard>

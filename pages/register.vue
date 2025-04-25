@@ -18,9 +18,9 @@
 
       <el-card class="mt-8 shadow-md mb-54">
         <el-form
+          ref="formRef"
           :model="registerRequest"
           :rules="rules"
-          ref="formRef"
           status-icon
           class="space-y-6"
         >
@@ -48,7 +48,7 @@
 
           <el-form-item prop="confirmPassword">
             <el-input
-              v-model="confirmPassword"
+              v-model="registerRequest.confirmPassword"
               type="password"
               placeholder="确认密码"
               :prefix-icon="Lock"
@@ -62,10 +62,10 @@
             <el-button
               type="primary"
               :loading="loading"
-              @click="submitForm"
               class="w-full py-3 text-base font-medium"
               size="large"
               :disabled="!formIsValid"
+              @click="submitForm"
             >
               注册
             </el-button>
@@ -80,25 +80,24 @@
 import { User, Lock } from "@element-plus/icons-vue";
 import type { FormInstance, FormRules } from "element-plus";
 import { useAuth } from "~/api/useAuth";
-import type { LoginRequest } from "~/types/LoginRequest";
 
 definePageMeta({
   layout: "auth",
 });
 
-const registerRequest: Ref<LoginRequest> = ref({
+const registerRequest = ref({
   password: "",
   username: "",
+  confirmPassword: "",
 });
 
-const confirmPassword = ref("");
 const loading = ref(false);
 const formRef = ref<FormInstance>();
 const formIsValid = computed(
   () =>
     registerRequest.value.username &&
     registerRequest.value.password &&
-    confirmPassword.value === registerRequest.value.password,
+    registerRequest.value.confirmPassword === registerRequest.value.password,
 );
 
 const rules: FormRules = {
@@ -108,6 +107,8 @@ const rules: FormRules = {
     { required: true, message: "请再次输入密码", trigger: "blur" },
     {
       validator: (rule, value, callback) => {
+        console.log(value, registerRequest.value.password);
+
         if (value !== registerRequest.value.password) {
           callback(new Error("两次输入的密码不一致"));
         } else {
@@ -129,7 +130,10 @@ const submitForm = async () => {
       loading.value = true;
 
       try {
-        await register(registerRequest.value);
+        await register({
+          username: registerRequest.value.username,
+          password: registerRequest.value.password,
+        });
         // 登录成功，会自动触发 loginMutation 中的 onSuccess 回调
         // 可以在这里进行其他操作，比如导航到首页
         navigateTo("/");

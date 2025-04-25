@@ -182,9 +182,9 @@ export function useOrder() {
     onSuccess: () => {
       ElMessage.success("更新订单地址成功");
     },
-    onError: (error) => {
+    onError: () => {
       // 处理错误情况
-      console.error("更新订单地址失败:", error);
+      ElMessage.error("修改地址失败：只能修改待支付、已支付或处理中订单的地址");
     },
     onSettled: () => {
       // 地址更新后，重新获取订单列表
@@ -203,9 +203,9 @@ export function useOrder() {
     onSuccess: () => {
       ElMessage.success("取消订单成功");
     },
-    onError: (error) => {
+    onError: () => {
       // 处理错误情况
-      console.error("取消订单失败:", error);
+      ElMessage.error("取消订单失败，请稍后重试");
     },
     onSettled: () => {
       // 取消订单后，重新获取订单列表
@@ -224,9 +224,9 @@ export function useOrder() {
     onSuccess: () => {
       ElMessage.success("退款订单成功");
     },
-    onError: (error) => {
+    onError: () => {
       // 处理错误情况
-      console.error("退款订单失败:", error);
+      ElMessage.error("退款订单失败，请稍后重试");
     },
     onSettled: () => {
       // 退款订单后，重新获取订单列表
@@ -245,9 +245,9 @@ export function useOrder() {
     onSuccess: () => {
       ElMessage.success("完成订单成功");
     },
-    onError: (error) => {
+    onError: () => {
       // 处理错误情况
-      console.error("完成订单失败:", error);
+      ElMessage.error("完成订单失败，请稍后重试");
     },
     onSettled: () => {
       // 完成订单后，重新获取订单列表
