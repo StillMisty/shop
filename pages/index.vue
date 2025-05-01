@@ -16,11 +16,24 @@
       />
     </div>
     <div
+      v-if="categoryData"
+      class="flex flex-wrap max-w-7xl mx-auto px-16 pt-16 pb-4"
+    >
+      <NuxtLink>
+        <el-button
+          v-for="category of categoryData"
+          :key="category.categoryId"
+          plain
+          >{{ category.categoryName }}
+        </el-button>
+      </NuxtLink>
+    </div>
+    <div
       v-if="productPage && productPage.pages"
       v-infinite-scroll="fetchNextPage"
       infinite-scroll-delay="100"
       infinite-scroll-distance="60"
-      class="grid gap-4 p-16 max-w-7xl mx-auto grid-cols-[repeat(auto-fill,minmax(260px,1fr))]"
+      class="grid gap-4 p-16 pt-0 max-w-7xl mx-auto grid-cols-[repeat(auto-fill,minmax(260px,1fr))]"
     >
       <template v-for="(products, index) in productPage?.pages" :key="index">
         <ProductCard
@@ -42,6 +55,7 @@
 
 <script setup lang="ts">
 import { RefreshCw, TriangleAlert, LoaderCircle } from "lucide-vue-next";
+import { useCategory } from "~/api/useCategory";
 import { useProduct } from "~/api/useProduct";
 
 const { productPageQuery } = useProduct();
@@ -55,6 +69,10 @@ const {
   error,
   isPending,
 } = productPageQuery;
+
+const { fetchCategoryQuery } = useCategory();
+
+const { data: categoryData } = fetchCategoryQuery;
 
 const handleRefresh = () => {
   productPageQuery.refetch();
